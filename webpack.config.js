@@ -14,7 +14,7 @@ const HtmlWebpackPluginConfig = new HtmlWebpackPlugin({
 });
 
 const config = {
-  entry: "./app/index.jsx", //Punto de entrada
+  entry: ["@babel/polyfill","./app/index.jsx"], //Punto de entrada
   output: {
     path: path.resolve("dist"),
     filename: "bundle.js"
