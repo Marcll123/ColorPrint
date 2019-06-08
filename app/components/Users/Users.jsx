@@ -24,6 +24,7 @@ class Users extends Component {
     };
     this.userService = new UsersService();
     this.NumberDetail = new NumberDetail();
+    
     this.handleAddTodo = this.handleAddTodo.bind(this);
     this.handleUpdateTodo = this.handleUpdateTodo.bind(this);
     this.handleSubmitiId = this.handleSubmitiId.bind(this);
@@ -161,7 +162,7 @@ class Users extends Component {
                   <FormUsers
                     onAddTodo={this.handleAddTodo}
                     onUpdateTodo={this.handleUpdateTodo}
-                  />
+                />
                 }
                 title="Usuarios"
               />

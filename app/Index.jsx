@@ -2,8 +2,8 @@ import React, {Component} from 'react';
 import {render} from 'react-dom'
 import './Index.css'
 import Start from './components/Start/Start.jsx'
-import Menu from './components/Menu/Menu.jsx'
 import Users from './components/Users/Users.jsx'
+import Login from './components/login/Login.jsx'
 import {BrowserRouter as Router, Route} from 'react-router-dom'
 
 class App extends Component{
@@ -12,7 +12,10 @@ class App extends Component{
             <Router>
                 <div className="App">
                     <Route path="/" exact render={()=>{
-                        return(<Users></Users>)
+                        return(<Login></Login>)
+                    }}></Route>
+                    <Route path="/login" exact render={()=>{
+                        return(<Login></Login>)
                     }}></Route>
                     <Route path="/start" exact render={()=>{
                         return(<Start></Start>)
