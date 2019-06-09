@@ -7,14 +7,14 @@ import {
     POST,
     PUT,
     DELETE
-} from './ConfigApi';  
+} from './ConfigApi'; 
 
-export class UsersService {
+export class PermitService {
     constructor() {
-        this.url = `${API}/Users.php`;
+        this.url = `${API}/Permits.php`;
     }
 
-    async getUsers(page) {
+    async getPermits(page) {
         const response = await new HttpService(`${this.url}?page=${page}`, GET).setHeaders({token: localStorage.getItem('token')}).execute();
         if (response.hasOwnProperty('res')) {
             return response.res;
@@ -23,7 +23,7 @@ export class UsersService {
         }
     }
 
-    async saveUsers(body) {
+    async savePermits(body) {
         const response = await new HttpService(this.url, POST).setData(body).execute();
         if (response.hasOwnProperty('res')) {
             return response.res;
@@ -33,7 +33,7 @@ export class UsersService {
     }
 
 
-    async updateUsers(body, id) {
+    async updatePermits(body, id) {
         const response = await new HttpService(`${this.url}?id=${id}`, PUT).setHeaders({
             'Content-Type': 'application/json'
         }).setData(JSON.stringify(body)).execute();
@@ -44,7 +44,7 @@ export class UsersService {
         }
     }
 
-    async deleteUsers(id) {
+    async deletePermits(id) {
         const response = await new HttpService(`${this.url}?id=${id}`, DELETE).setHeaders({
             'Content-Type': 'application/json'
         }).execute();
@@ -56,12 +56,12 @@ export class UsersService {
     }
 }
 
-export class NumberDetail{
+export class Number{
     constructor() {
-        this.url = `${API}/ConsultNumberUser.php`;
+        this.url = `${API}/ConsultNumberPermits.php`;
     }
 
-    async getNumberDetail() {
+    async getNumber(){
         const response = await new HttpService(this.url, GET).execute();
         if (response.hasOwnProperty('res')) {
             return response.res;
