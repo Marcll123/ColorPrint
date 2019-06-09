@@ -1,7 +1,7 @@
 <?php
      require_once '../models/DepartmentModel.php';
      
-     class ActionsController{
+     class DepartmentController{
         public function show(){    
             $department = new DepartmentModel();
             $page = $_REQUEST['page'];

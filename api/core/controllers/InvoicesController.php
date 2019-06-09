@@ -1,7 +1,7 @@
 <?php
      require_once '../models/InvoicesModel.php';
      
-     class ActionsController{
+     class InvoicesController{
         public function show(){    
             $invoives = new InvoicesModel();
             $page = $_REQUEST['page'];
