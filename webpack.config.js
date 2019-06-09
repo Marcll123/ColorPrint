@@ -71,6 +71,11 @@ const config = {
       }
     ]
   },
+  devServer: {
+    historyApiFallback: true,
+    contentBase: './',
+    hot: true
+  },
   plugins: [
     HtmlWebpackPluginConfig,
     new MiniCssExtractPlugin(),

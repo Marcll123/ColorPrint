@@ -20,7 +20,7 @@ class Search extends Component {
           >
             Buscar
           </button>
-          <ModalButton text={this.props.textButton}></ModalButton>
+          <ModalButton text={this.props.textButton}  click={this.props.click}></ModalButton>
         </form>
       </nav>
     );

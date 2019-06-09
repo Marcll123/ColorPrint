@@ -7,11 +7,11 @@ class Input extends Component {
 
     render(){
         return(
-           <div>
+           <React.Fragment>
             <label for={this.props.for}>{this.props.text}</label>
-            <input type={this.props.type} id={this.props.id} name={this.props.name}
-            onChange={this.props.onChange} placeholder={this.props.placeholder} className="form-control"></input>
-           </div>
+            <input type={this.props.type} id={this.props.id}  name={this.props.name}
+             onChange={this.props.onChange} placeholder={this.props.placeholder} className="form-control"></input>
+          </React.Fragment>
         )
     }
 }

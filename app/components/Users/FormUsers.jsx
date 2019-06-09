@@ -55,11 +55,19 @@ class FormUsers extends Component {
                     onChange={this.handleImput}
                   />
                   <Input
-                    for="phone"
-                    text="Telefono:"
+                    for="Genero"
+                    text="Genero:"
                     type="text"
-                    id="phone"
-                    name="telefono"
+                    id="Genero"
+                    name="genero"
+                    onChange={this.handleImput}
+                  />
+                  <Input
+                    for="Usuario"
+                    text="Usuario:"
+                    type="text"
+                    id="Usuario"
+                    name="nombre_usu"
                     onChange={this.handleImput}
                   />
                 </div>

@@ -1,8 +1,9 @@
 import React from "react";
 
-function Table({ titles, data, keys, tableName, actions }) {
+function Table({ titles, data, keys, tableName, actions ,id, className}) {
     return (
-        <table className="table table-responsive-sm">
+        <table id={id} className={className} cellspacing="0"
+         width="100%">
             <thead className="bg-primary text-white">
                 {titles.map(title => {
                     return <th key={title}>{title}</th>;

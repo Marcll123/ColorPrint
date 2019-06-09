@@ -28,8 +28,8 @@ class Menu extends Component {
                           ><i className="fas fa-user iconli2 text-primary">
                           </i>Administrar usuarios</Link> 
                           
-                          <Link className="list-group-item list-group-item-action bg-white hover"><i
-                          className="fas fa-users-cog iconli text-success"></i> Administrar empresas</Link>
+                          <Link to="/clientes" className="list-group-item list-group-item-action bg-white hover"><i
+                          className="fas fa-users-cog iconli text-success"></i> Administrar clientes</Link>
                        </div>
 
                       {/*Modulo de Compras*/}
