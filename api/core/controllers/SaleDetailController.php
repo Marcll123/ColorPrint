@@ -1,7 +1,7 @@
 <?php
      require_once '../models/SaleDetailModel.php';
      
-     class ShopController{
+     class SaleDetailController{
         public function show(){    
             $shops = new SaleDetailModel();
             $page = $_REQUEST['page'];
@@ -28,16 +28,16 @@
             $saleid  = $_POST['saleidd'];
             $id = $_POST['idsad'];
 
-            $clientI = new SaleDetailModel();
-            return $shopI->createShop($cproduct , $umd, $quantity, $discount, $vnosubject, $veffector, $tp, $description, $total_e, $price, $vconversion, $uconversion, $total, $saleid, $id);
+            $saledetailI = new SaleDetailModel();
+            return $saledetailI->createShop($cproduct , $umd, $quantity, $discount, $vnosubject, $veffector, $tp, $description, $total_e, $price, $vconversion, $uconversion, $total, $saleid, $id);
         }
 
         public function updateSaleDetail(){
             $id = $_REQUEST['idsh'];
             $body = json_decode(file_get_contents("php://input"));    
          
-            $saledetailU = new SaleDetailModel();
-            return $saledetailU->updateshop($body->cproduct, $body->umd, $body->quantity, $body->discount, $body->vnosubject, $body->veffector, $body->tp, $body->description, $body->total_e, $body->price, $body->vconversion, $body->uconversion, $body->total, $body->saleid, $id);
+            $saledetaillU = new SaleDetailModel();
+            return $SaleDetailU->updateshop($body->cproduct, $body->umd, $body->quantity, $body->discount, $body->vnosubject, $body->veffector, $body->tp, $body->description, $body->total_e, $body->price, $body->vconversion, $body->uconversion, $body->total, $body->saleid, $id);
         }
 
         public function deleteSaleDetail(){
