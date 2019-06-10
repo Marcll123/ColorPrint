@@ -7,7 +7,7 @@ class Search extends Component {
   }
   render() {
     return (
-      <nav class="navbar navbar-white bg-white">
+      <nav className="navbar navbar-white bg-white">
         <form className="form-inline">
           <input
             type="search"
@@ -15,12 +15,13 @@ class Search extends Component {
             placeholder="Buscar"
           />
           <button
-            className="btn btn-outline-primary my-2 my-sm-2 mr-1"
+            className="btn btn-outline-primary my-2 my-sm-2"
             type="submit"
           >
             Buscar
           </button>
-          <ModalButton text={this.props.textButton}  click={this.props.click}></ModalButton>
+          <ModalButton text={this.props.textButton}  click={this.props.click} target={this.props.target} modal={this.props.modal}></ModalButton>
+          {this.props.botontable}
         </form>
       </nav>
     );

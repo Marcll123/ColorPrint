@@ -2,7 +2,7 @@ import React from "react";
 
 function Modal({ form, id, title, footer,size, center, submit }) {
     return (
-        <div onSubmit={submit} className="modal fade bd-example-modal-sm mt-3" id={id} tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
+        <div onSubmit={submit} className="modal fade bd-example-modal-sm mt-3" id={id} tabIndex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
         <div className={`modal-dialog modal-dialog modal-dialog-scrollable ${size} ${center}`} role="document">
           <div className="modal-content">
             <div className="modal-header">

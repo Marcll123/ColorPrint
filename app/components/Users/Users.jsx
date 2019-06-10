@@ -164,7 +164,7 @@ class Users extends Component {
                 <div className="col-12">
                   <div className="card">
                     <div className="card-body">
-                      <Search textButton="Agregar usuario" />
+                      <Search textButton="Agregar usuario" modal="modal" target="#modal1" />
                       <Table
                         className="table table-responsive-sm table-responsive-md table-responsive-sm-xl
                         table-responsive-lg"

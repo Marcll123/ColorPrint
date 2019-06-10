@@ -8,7 +8,7 @@ class ControlForm extends Component {
     render(){
         return(
           <React.Fragment>
-           <label for={this.props.for}>{this.props.text}</label>
+           <label htmlFor={this.props.for}>{this.props.text}</label>
             <select id={this.props.id} name={this.props.name} class="form-control form-control-sm">
             {this.props.content}
           </select>

@@ -2,7 +2,7 @@ import React from "react";
 
 function Table({ titles, data, keys, tableName, actions ,id, className}) {
     return (
-        <table id={id} className={className} cellspacing="0"
+        <table id={id} className={className} cellSpacing="0"
          width="100%">
             <thead className="bg-primary text-white">
                 {titles.map(title => {

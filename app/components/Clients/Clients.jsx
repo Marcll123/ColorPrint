@@ -183,7 +183,7 @@ class Clients extends Component {
                 <div className="col-12">
                   <div className="card">
                     <div className="card-body">
-                      <Search textButton="Agregar cliente" click={this.Add}/>
+                      <Search textButton="Agregar cliente" modal="modal" target="#modal1" click={this.Add}/>
                       <Table
                         id="dtHorizontalExample"
                         className="table table-responsive-sm table-responsive-md table-responsive-sm-xl

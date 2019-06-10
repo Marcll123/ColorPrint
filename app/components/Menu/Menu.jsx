@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import "./Menu.css";
 import logo from "../../resources/img/logo2.PNG";
-import Start from '../Start/Start.jsx'
 import {Link} from "react-router-dom";
 
 class Menu extends Component {
@@ -36,12 +35,24 @@ class Menu extends Component {
                       <a href="#shoppingData" data-toggle="collapse"
                       className="list-group-item list-group-item-action bg-white hover">Compras<i
                       className="fas fa-angle-down iconMove2 text-primary"></i></a>
+                        <div id="shoppingData" className="collapse">
+                          <Link to="/compras" className="list-group-item list-group-item-action bg-white hover"
+                          ><i className="fas fa-user iconli2 text-primary">
+                          </i>Gestion compras</Link> 
+                       </div>
                       
                       {/*Moduolo de Ventas*/}
                       <a href="#salesData" data-toggle="collapse"
                       className="list-group-item list-group-item-action bg-white hover">Ventas<i
                       className="fas fa-angle-down iconMove3 text-primary"></i></a>
-
+                      <div id="salesData" className="collapse">
+                          <Link to="/ventas" className="list-group-item list-group-item-action bg-white hover"
+                          ><i className="fas fa-user iconli2 text-primary">
+                          </i>Gestion ventas</Link> 
+                          <Link to="/cotizaciones" className="list-group-item list-group-item-action bg-white hover"
+                          ><i className="fas fa-user iconli2 text-primary">
+                          </i>Corizaciones</Link> 
+                       </div>
                       {/*Modulo de graficos*/}
                       <a href="#graphics" data-toggle="collapse"
                       className="list-group-item list-group-item-action bg-white hover">Graficos<i
@@ -56,6 +67,14 @@ class Menu extends Component {
                       <a href="#administration" data-toggle="collapse"
                       className="list-group-item list-group-item-action bg-white hover">Administracion<i
                       className="fas fa-angle-down iconMove6 text-primary"></i></a>
+                      <div id="administration" className="collapse">
+                          <Link to="/tipoventas" className="list-group-item list-group-item-action bg-white hover"
+                          ><i className="fas fa-user iconli2 text-primary">
+                          </i>Tipo Ventas</Link> 
+                          
+                          <Link to="/clientes" className="list-group-item list-group-item-action bg-white hover"><i
+                          className="fas fa-users-cog iconli text-success"></i> Administrar clientes</Link>
+                       </div>
 
                    </div>
                </div>

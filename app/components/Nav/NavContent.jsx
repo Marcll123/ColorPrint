@@ -9,11 +9,18 @@ class NavContent extends Component{
         }
 
         this.click = this.click.bind(this);
+        this.clickt = this.clickt.bind(this);
     }
 
     click(e){
         e.preventDefault();
         this.setState({redirect:true})
+    }
+    clickt(e){
+        $("#menu-toggle").click(function(e) {
+            e.preventDefault();
+            $("#wrapper").toggleClass("toggled");
+        });
     }
 
     render(){
@@ -24,7 +31,8 @@ class NavContent extends Component{
             <div className="NavContent">
                   <nav className="navbar navbar-expand-lg navbar-light  border-bottom
                   nav-size">
-                     <img src={menu} id="menu-toggle"/>
+                     <img src={menu} onClick={this.clickt} id="menu-toggle"/>
+                    
                      <ul className="navbar-nav ml-auto mt-2 mt-lg-0 ">
                        <li className="nav-item active">
                         <button onClick={this.click} type="submit" className="nav-link text-primary btn btn-flat" href=""><i className="fas fa-sign-out-alt"></i> Cerrar
