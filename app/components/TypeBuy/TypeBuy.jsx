@@ -1,28 +1,33 @@
 import React, { Component } from "react";
 import Menu from "../Menu/Menu.jsx";
 import NavContent from "../Nav/NavContent.jsx";
-import "./Users.css";
 import Search from "../AnotherComponents/Search.jsx";
 import Table from "../AnotherComponents/Table.jsx";
-import FormUsers from "./FormUsers.jsx";
+import FormTypeBuy from "./FormTypeBuy.jsx";
 import Modal from "../AnotherComponents/Modal.jsx";
 import CancelButton from "../AnotherComponents/buttons/CancelButton.jsx";
 import AcceptButton from "../AnotherComponents/buttons/AcceptButton.jsx";
 import Pagination from "react-js-pagination";
-import { UsersService } from "../../services/UsersService.js";
-import { NumberDetail } from "../../services/UsersService.js";
+import { TypeBuyService } from "../../services/TypeBuyService.js";
+import { Number } from "../../services/TypeBuyService.js";
 
-class Users extends Component {
+class TypeBuy extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      titles: ["Nombre", "Apellidos", "Genero", "Usuario", "Correo", "Rol"],
-      keys: ["nombre", "apellido", "genero", "nombre_usu", "correo", "id_rol"],
+      titles: [
+        "Tipo compra"
+        
+      ],
+      keys: [
+        "tipo_compra"  
+      ],
       data: [],
       val: 1
     };
-    this.userService = new UsersService();
-    this.NumberDetail = new NumberDetail();
+
+    this.TypeBuyService = new TypeBuyService();
+    this.number = new Number();
 
     this.handleAddTodo = this.handleAddTodo.bind(this);
     this.handleUpdateTodo = this.handleUpdateTodo.bind(this);
@@ -30,10 +35,17 @@ class Users extends Component {
     this.handlePagination = this.handlePagination.bind(this);
     this.handlePageChange = this.handlePageChange.bind(this);
     this.Add = this.Add.bind(this);
+    this.getdata;
     this.id = "";
     this.idDelete = "";
     this.num = 1;
     this.totalItemsCount = 0;
+  }
+
+  handlePagination() {
+    this.number.getNumber().then(res => {
+      this.totalItemsCount = res[0].num;
+    });
   }
 
   handlePageChange(pageNumber) {
@@ -52,7 +64,7 @@ class Users extends Component {
   }
 
   getdata(page) {
-    this.userService.getUsers(page).then(res => {
+    this.TypeBuyService.getTypeBuy(this.state.val).then(res => {
       this.setState(prev => {
         const { data } = prev;
         return { data: [...res] };
@@ -65,22 +77,20 @@ class Users extends Component {
   }
 
   update(row) {
-    return event => {
-      this.id = row.id_usuario;
-      console.log(row.id);
+    return e => {
+      this.id = row.id_tipocompra;
     };
   }
   delete(row) {
     return e => {
-      this.idDelete = row.id_usuario;
-      console.log(this.idDelete);
+      this.idDelete = row.id_tipocompra;
     };
   }
 
   handleAddTodo(form) {
-    this.userService.saveUsers(form).then(res => {
-      this.getdata(this.state.val);
-    });
+    this.TypeBuyService.saveTypeBuy(form).then(res =>{
+       this.getdata(this.state.val);
+    })
   }
 
   handleUpdateTodo(form) {
@@ -90,27 +100,20 @@ class Users extends Component {
       };
     });
 
-    this.userService.updateUsers(Object.assign({}, ...a), this.id).then(res => {
+    this.TypeBuyService.updateTypeBuy(Object.assign({}, ...a), this.id).then(res => {
       this.getdata(this.state.val);
     });
   }
 
   handleSubmitiId(e) {
     e.preventDefault();
-    console.log(this.idDelete);
-    this.userService.deleteUsers(this.idDelete).then(res => {
+    this.TypeBuyService.deleteTypeBuy(this.idDelete).then(res =>{
       this.getdata(this.state.val);
-    });
-  }
-
-  handlePagination() {
-    this.NumberDetail.getNumberDetail().then(res => {
-      this.totalItemsCount = res[0].num;
-    });
+    })
   }
   Add(e){
-    this.id = ""
-    console.log(this.id)
+      this.id = ""
+      console.log(this.id)
   }
   render() {
     const { state } = this;
@@ -128,29 +131,26 @@ class Users extends Component {
               <div className="card card-margen">
                 <div className="card-head">
                   <h5 className="text-primary text-center mt-4 mb-4">
-                    USUARIOS
+                    Tipo de compra
                   </h5>
                 </div>
               </div>
-              {/*Modal de acciones*/}
               <Modal
                 id="modal1"
                 size="modal-lg"
-                form={
-                  <FormUsers
-                    onAddTodo={this.handleAddTodo}
-                    onUpdateTodo={this.handleUpdateTodo}
-                  />
-                }
-                title="Usuarios"
-              />
+                form={<FormTypeBuy
+                  onAddTodo={this.handleAddTodo}
+                  onUpdateTodo={this.handleUpdateTodo}
+                />}
+                title="Tipo de compra"
+               />
               <Modal
                 id="modal2"
                 size="modal-sm"
                 center="modal-dialog-centered"
                 form={
                   <h1 className="text-danger text">
-                    Desea eliminar este usuario
+                    Desea eliminar este Tipo de compra
                   </h1>
                 }
                 footer={
@@ -163,13 +163,13 @@ class Users extends Component {
                   </form>
                 }
               />
-
               <div className="row split">
                 <div className="col-12">
                   <div className="card">
                     <div className="card-body">
-                      <Search textButton="Agregar usuario" modal="modal" target="#modal1" click={this.Add}/>
+                      <Search textButton="Agregar tipo compras" modal="modal" target="#modal1" click={this.Add}/>
                       <Table
+                        id="dtHorizontalExample"
                         className="table table-responsive-sm table-responsive-md table-responsive-sm-xl
                         table-responsive-lg"
                         titles={state.titles}
@@ -203,4 +203,4 @@ class Users extends Component {
   }
 }
 
-export default Users;
+export default TypeBuy;

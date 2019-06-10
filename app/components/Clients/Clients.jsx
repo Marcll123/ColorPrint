@@ -13,8 +13,11 @@ import { ClientService } from "../../services/ClientService.js";
 import { NumberAll } from "../../services/ClientService.js";
 
 class Clients extends Component {
+  //Constructor de el componente Clients
   constructor(props) {
     super(props);
+    //Estate de el componente Clients que contiene titles de la tabla y sus keys para obtener
+    //los datos y mostrarlos en la vista
     this.state = {
       titles: [
         "ID",
@@ -44,7 +47,7 @@ class Clients extends Component {
 
     this.clientService = new ClientService();
     this.number = new NumberAll();
-
+    //Bindeo de los metodos utilizados en el componente
     this.handleAddTodo = this.handleAddTodo.bind(this);
     this.handleUpdateTodo = this.handleUpdateTodo.bind(this);
     this.handleSubmitiId = this.handleSubmitiId.bind(this);
@@ -57,13 +60,13 @@ class Clients extends Component {
     this.num = 1;
     this.totalItemsCount = 0;
   }
-
+  //Obtine el numero de datos desde la base de datos
   handlePagination() {
     this.number.getNumber().then(res => {
       this.totalItemsCount = res[0].num;
     });
   }
-
+  //Obtiene el numero de la paginacion que se a seleccionado
   handlePageChange(pageNumber) {
     this.setState(
       {
@@ -74,11 +77,11 @@ class Clients extends Component {
       }
     );
   }
-
+  //Metodo del cliclo de vida de un componente de React
   componentDidMount() {
     this.getdata(this.state.val);
   }
-
+  //Este es el metodo que se encarga de obtener la Data desde la base de datos por medio de sus servicio
   getdata(page) {
     this.clientService.getClient(this.state.val).then(res => {
       this.setState(prev => {
@@ -91,7 +94,8 @@ class Clients extends Component {
   handleInit() {
     this.getdata(this.state.val);
   }
-
+  //Ontienen el valor de la fila seleccionada de los campos de la tabla para realizar
+  //La acciones de Eliminar y actualizar
   update(row) {
     return e => {
       this.id = row.id_cliente;
@@ -102,13 +106,14 @@ class Clients extends Component {
       this.idDelete = row.id_cliente;
     };
   }
-
+  //Este metodo realiza  la accion de agregar datos a la base de datos usando su servicio
   handleAddTodo(form) {
-    this.clientService.saveClient(form).then(res =>{
-       this.getdata(this.state.val);
-    })
+    this.clientService.saveClient(form).then(res => {
+      this.getdata(this.state.val);
+    });
   }
-
+  //Este metodo se encarga de actualizar los datos de la base de datos y mostrar los cambios
+  //En el componente una vez se realiza la accion
   handleUpdateTodo(form) {
     const a = Array.from(form.entries()).map(arr => {
       return {
@@ -116,21 +121,26 @@ class Clients extends Component {
       };
     });
 
-    this.clientService.updateClient(Object.assign({}, ...a), this.id).then(res => {
+    this.clientService
+      .updateClient(Object.assign({}, ...a), this.id)
+      .then(res => {
+        this.getdata(this.state.val);
+      });
+  }
+  //Este es el metodo que se encarga de eliminar un dato de la base de datos usando su servicio
+  handleSubmitiId(e) {
+    e.preventDefault();
+    this.clientService.deleteClient(this.idDelete).then(res => {
       this.getdata(this.state.val);
     });
   }
-
-  handleSubmitiId(e) {
-    e.preventDefault();
-    this.clientService.deleteClient(this.idDelete).then(res =>{
-      this.getdata(this.state.val);
-    })
+  //Este es un metodo que hace que this.id  = "" para que no haya problemas a la hora de crear
+  //o actualizar un dato de la tabla
+  Add(e) {
+    this.id = "";
+    console.log(this.id);
   }
-  Add(e){
-      this.id = ""
-      console.log(this.id)
-  }
+  //Metodo render de react donde se renderiza toda la vista del componente
   render() {
     const { state } = this;
     return (
@@ -151,15 +161,19 @@ class Clients extends Component {
                   </h5>
                 </div>
               </div>
+              {/*Modal 1 es el encargado de tener el form de crear y actualizar los datos en la tabla */}
               <Modal
                 id="modal1"
                 size="modal-lg"
-                form={<FormClient
-                  onAddTodo={this.handleAddTodo}
-                  onUpdateTodo={this.handleUpdateTodo}
-                />}
+                form={
+                  <FormClient
+                    onAddTodo={this.handleAddTodo}
+                    onUpdateTodo={this.handleUpdateTodo}
+                  />
+                }
                 title="Clientes"
-               />
+              />
+              {/*Modal que se muestra cuando se apreta el boton de elinar un campo de la base de datos*/}
               <Modal
                 id="modal2"
                 size="modal-sm"
@@ -183,7 +197,14 @@ class Clients extends Component {
                 <div className="col-12">
                   <div className="card">
                     <div className="card-body">
-                      <Search textButton="Agregar cliente" modal="modal" target="#modal1" click={this.Add}/>
+                      {/*componente de search y tabla que se muestran segun los datos que se necesiten
+                       a ca se utiiza los state que estan en el contructor de titles, data, keys*/}
+                      <Search
+                        textButton="Agregar cliente"
+                        modal="modal"
+                        target="#modal1"
+                        click={this.Add}
+                      />
                       <Table
                         id="dtHorizontalExample"
                         className="table table-responsive-sm table-responsive-md table-responsive-sm-xl

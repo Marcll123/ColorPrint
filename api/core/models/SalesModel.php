@@ -1,23 +1,7 @@
 <?php
-     require_once '../helpers/connection.php';
+     require_once '../helpers/Connection.php';
      
-     class UserModel extends Connection {
-        public $id = null; 
-        public $id_sucursal = null; 
-        public $tipo_com = null;
-        public $id_cliente = null;
-        public $direccion = null;
-        public $forma = null;
-        public $dias_credito = null;
-        public $punto_venta = null;
-        public $contacto = null;
-        public $tipo_venta = null;
-        public $tipo_fac = null;
-        public $id_usuario = null;
-        public $nota_remision = null;
-        public $num_pedido = null;
-        public $bodega = null;
-        
+     class SalesModel extends Connection {
         public function consult($num)
         {
             $connection = parent::connect();
@@ -58,7 +42,7 @@
         public function createSale($id_sucursal , $tipo_com, $id_cliente, $direccion, $forma, $dias_credito,$punto_venta,$contacto,$tipo_venta,$tipo_fac,$id_usuario,$nota_remision,$num_pedido,$bodega){
             $conexion = parent::connect();       
             try {
-                $query = 'INSERT INTO ventas(id_sucursal, id_tipocom,id_cliente, direccion, id_forma, dias_credito, punto_venta, contato,id_tipoven,id_tipofac,id_usuario,nota_remision,num_pedido,bodega) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)';
+                $query = 'INSERT INTO ventas(id_sucursal, id_tipocom,id_cliente, direccion, id_forma, dias_credito, punto_venta, contacto,id_tipoven,id_tipofac,id_usuario,nota_remision,num_pedido,bodega) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)';
                 $conexion->prepare($query)->execute(array($id_sucursal , $tipo_com, $id_cliente, $direccion, $forma, $dias_credito,$punto_venta,$contacto,$tipo_venta,
                 $tipo_fac,$id_usuario,$nota_remision,$num_pedido,$bodega));
                 $array = [
@@ -82,7 +66,7 @@
         $tipo_fac,$id_usuario,$nota_remision,$num_pedido,$bodega, $id){
             $conexion = parent::connect();       
             try {
-                $query = 'UPDATE ventas SET id_sucursal=? , id_tipocom=?,id_cliente=?, direccion=?, id_forma=?, dias_credito=?, punto_venta=?, contato=?,id_tipoven=?,id_tipofac=?,id_usuario=?,nota_remision=?,num_pedido=?,bodega=? WHERE id_venta=?';
+                $query = 'UPDATE ventas SET id_sucursal=? , id_tipocom=?,id_cliente=?, direccion=?, id_forma=?, dias_credito=?, punto_venta=?, contacto=?,id_tipoven=?,id_tipofac=?,id_usuario=?,nota_remision=?,num_pedido=?,bodega=? WHERE id_venta=?';
                 $conexion->prepare($query)->execute(array($id_sucursal , $tipo_com, $id_cliente, $direccion, $forma, $dias_credito,$punto_venta,$contacto,$tipo_venta,
                 $tipo_fac,$id_usuario,$nota_remision,$num_pedido,$bodega ,$id));
                 $array = [
@@ -124,4 +108,3 @@
             }
         }
     }
-?>

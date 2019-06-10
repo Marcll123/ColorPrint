@@ -1,9 +1,11 @@
 <?php
 
+//Se manda a llamar la coneccion con la base de datos 
 require_once '../helpers/Connection.php';
 
 class PurchaseModel extends Connection
 {
+    // se hace la consulta para obtener los datos de la tabla que se quiere
     public function consult($num)
     {
         $connection = parent::connect();
@@ -24,7 +26,7 @@ class PurchaseModel extends Connection
             return json_encode($array);
         }
     }
-
+    //se hace la paginacion de los datos
     public function consultNum()
     {
         $connection = parent::connect();
@@ -41,7 +43,7 @@ class PurchaseModel extends Connection
             return json_encode($array);
         }
     }
-
+    //se hace el INSERT con los campos que se quieren ingresar a la datos de base
     public function createShop($numberdocu, $supplier, $address, $celler,  $typedoc, $seriescost, $typepurchase, $shape, $idoriginpucharse, $numregi, $purchasenum, $dai, $excludeddoc)
     {
         $conexion = parent::connect();
@@ -63,7 +65,7 @@ class PurchaseModel extends Connection
             return json_encode($array);
         }
     }
-
+    //se crea el Update  para actualizar datos
     public function updateShop($numberdocu, $supplier, $address, $celler,  $typedoc, $seriescost, $typepurchase, $shape, $idoriginpucharse, $numregi, $purchasenum, $dai, $excludeddoc, $id)
     {
         $conexion = parent::connect();
@@ -85,7 +87,7 @@ class PurchaseModel extends Connection
             return json_encode($array);
         }
     }
-
+    //se hace el Delete y se el pone el id con el que va a usar para reconocer y borrar el dato
     public function deleteShop($id)
     {
         $conexion = parent::connect();

@@ -6,8 +6,8 @@
 class Connection{   
         private static $db_server = 'localhost';
         private static $db_name = 'colorprint';
-        private static $db_user = 'root';
-        private static $db_pass = '';
+        private static $db_user = 'Marcos';
+        private static $db_pass = '123';
         private $conexion = null;
         #CONEXION BD
         public function connect(){

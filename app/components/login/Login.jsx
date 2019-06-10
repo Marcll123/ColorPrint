@@ -5,6 +5,7 @@ import {Redirect} from "react-router-dom";
 import "./Login.css";
 
 class Login extends Component {
+  //Constructor del componente contiene bindeos y state del mismo y el objeto de el servicio
   constructor(props) {
     super(props);
     this.state = {
@@ -18,7 +19,8 @@ class Login extends Component {
     this.login = this.login.bind(this);
     this.onChange = this.onChange.bind(this);
   }
-
+ //Se encarga de verificar el estado de la clave y el ususario y cambiar el estado 
+ //Para redireccionar a una nueva pantalla
   login(e) {
     e.preventDefault();
    if(this.state.username && this.state.password){
@@ -31,12 +33,13 @@ class Login extends Component {
      console.log('Login error')
    }
   }
-
+//Mtodo a la escucha de una accion de cambio para cambiar el estate
   onChange(e) {
     this.setState({[e.target.name]: e.target.value});
     console.log(this.state)
   }
 
+  //Reder de el componente login que contiene sus vista y algunos state
   render() {
     if(this.state.redirect){
       return (<Redirect to={'/start'}></Redirect>)
@@ -77,11 +80,11 @@ class Login extends Component {
                         ¿Olvidaste tu contraseña?
                       </a>
                     </p>
-                    <input
+                    <button 
                       type="submit"
                       value="Login"
-                      className="button"
-                    />
+                      className="button btn btn-flat btn-primary"
+                    >Iniciar sesion</button>
                   </form>
                 </div>
               </div>

@@ -9,12 +9,12 @@ import {
     DELETE
 } from './ConfigApi'; 
 
-export class SaleService {
+export class SalesDetailService {
     constructor() {
-        this.url = `${API}/Sales.php`;
+        this.url = `${API}/SaleDetail.php`;
     }
 
-    async getSales(page) {
+    async getSalesDetail(page) {
         const response = await new HttpService(`${this.url}?page=${page}`, GET).setHeaders({token: localStorage.getItem('token')}).execute();
         if (response.hasOwnProperty('res')) {
             return response.res;
@@ -23,7 +23,7 @@ export class SaleService {
         }
     }
 
-    async saveSales(body) {
+    async saveSalesDetail(body) {
         const response = await new HttpService(this.url, POST).setData(body).execute();
         if (response.hasOwnProperty('res')) {
             return response.res;
@@ -33,7 +33,7 @@ export class SaleService {
     }
 
 
-    async updateSales(body, id) {
+    async updateSalesDetail(body, id) {
         const response = await new HttpService(`${this.url}?id=${id}`, PUT).setHeaders({
             'Content-Type': 'application/json'
         }).setData(JSON.stringify(body)).execute();
@@ -44,7 +44,7 @@ export class SaleService {
         }
     }
 
-    async deleteSales(id) {
+    async deleteSalesDetail(id) {
         const response = await new HttpService(`${this.url}?id=${id}`, DELETE).setHeaders({
             'Content-Type': 'application/json'
         }).execute();
@@ -56,9 +56,9 @@ export class SaleService {
     }
 }
 
-export class NumberS{
+export class NumberD{
     constructor() {
-        this.url = `${API}/ConsultNumerSales.php`;
+        this.url = `${API}/ConsultNumberSaleDetail.php`;
     }
 
     async getNumber(){

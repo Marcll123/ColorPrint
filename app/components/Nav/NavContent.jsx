@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import menu from "../../resources/img/boton.PNG";
 import {Redirect} from "react-router-dom";
 class NavContent extends Component{
+    //Contructor de nav que tiene un estate para el redirect de salir de la session
     constructor(props){
         super(props);
         this.state={
@@ -12,10 +13,12 @@ class NavContent extends Component{
         this.clickt = this.clickt.bind(this);
     }
 
+    //Evento a la escucha del click en cerrar sesison de el nav
     click(e){
         e.preventDefault();
         this.setState({redirect:true})
     }
+    //Evento que sirve para que se desplique de 
     clickt(e){
         $("#menu-toggle").click(function(e) {
             e.preventDefault();

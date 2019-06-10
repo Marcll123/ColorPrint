@@ -1,10 +1,10 @@
 <?php
-
+//Se manda a llamar la coneccion con la base de datos 
 require_once '../helpers/Connection.php';
 
 class ClientModel extends Connection
 {
-
+    // se hace la consulta para obtener los datos de la tabla que se quiere
     public function consult($num)
     {
         $connection = parent::connect();
@@ -25,7 +25,7 @@ class ClientModel extends Connection
             return json_encode($array);
         }
     }
-
+    //se hace la paginacion de los datos
     public function consultNum()
     {
         $connection = parent::connect();
@@ -42,7 +42,7 @@ class ClientModel extends Connection
             return json_encode($array);
         }
     }
-
+    //se hace el INSERT con los campos que se quieren ingresar a la datos de base
     public function createClient($cliente, $giro, $numeronit, $numregistro, $id_muni, $telefono, $fax, $correo, $saldo_acumu, $limite_credito, $id_forma, $diascredito, $cuenta, $aplicarenta, $vendedor, $ultimopago, $creadopor, $fechacreacion, $idcli)
     {
         $conexion = parent::connect();
@@ -64,8 +64,8 @@ class ClientModel extends Connection
             return json_encode($array);
         }
     }
-
-    public function updateClient($cliente, $giro, $numeronit, $numregistro, $id_muni, $telefono, $fax, $correo, $saldo_acumu, $limite_credito, $id_forma, $diascredito, $cuenta, $aplicarenta, $vendedor, $ultimopago, $creadopor, $fechacreacion, $idcli,$id)
+    //se crea el Update  para actualizar datos 
+    public function updateClient($cliente, $giro, $numeronit, $numregistro, $id_muni, $telefono, $fax, $correo, $saldo_acumu, $limite_credito, $id_forma, $diascredito, $cuenta, $aplicarenta, $vendedor, $ultimopago, $creadopor, $fechacreacion, $idcli, $id)
     {
         $conexion = parent::connect();
         try {
@@ -87,6 +87,7 @@ class ClientModel extends Connection
         }
     }
 
+    //se hace el Delete y se el pone el id con el que va a usar para reconocer y borrar el dato
     public function deleteClients($id)
     {
         $conexion = parent::connect();

@@ -7,20 +7,21 @@ class CardStart extends Component{
     render(){
         return(
 
-                <div class="col-sm-4">
-                           <div class="card">
-                             <div class="card-body">
-                             <div class="row">
-                                <div class="col-sm-6">
+                <div className="col-sm-4">
+                           <div className="card">
+                             <div className="card-body">
+                             <div className="row">
+                                <div className="col-sm-6">
                                     <h5>{this.props.name}</h5>
                                     <h1>{this.props.num}</h1>
                                 </div>
-                                <div class="col-sm-6">
+                                <div className="col-sm-6">
                                    
                                 </div>
-                                <div class="col-sm-12">
+                                <div className="col-sm-12">
                                     <p>{this.props.update}</p>
                                 </div>
+                                {this.props.onLoad}
                             </div>
                         </div>
                     </div>
