@@ -14,7 +14,8 @@ class PurchaseModel extends Connection
             $page = 1 + $num;
             $page = $page - 1;
             $p = $page * $rowpaper;
-            $query = 'SELECT * FROM compra  limit ' . $p . ', ' . $rowpaper;
+            $query = 'SELECT id_compra, numerodocumento, proveedor.nombre_prove, direccion, bodega, tipodocumento.tipo_docmento, serie_costo, id_tipocompra.tipo_compra, formapago.forma_pago, origencompra.origen_com, num_registro , num_compra, dai, doc_excluidos FROM compra INNER JOIN proveedor ON proveedor.id_proveedor = compra.id_proveedor 
+            INNER JOIN id_tipocompra ON id_tipocompra.id_tipocompra = compra.id_tipocompra INNER JOIN formapago ON formapago.id_forma = compra.id_forma INNER JOIN origencompra ON compra.id_origencom = origencompra.id_origencom INNER JOIN tipodocumento ON compra.id_tipodoc = tipodocumento.id_tipodoc limit ' . $p . ', ' . $rowpaper;
             $data =  $connection->query($query, PDO::FETCH_ASSOC)->fetchAll();
             return $data;
         } catch (Exception $e) {
@@ -31,7 +32,7 @@ class PurchaseModel extends Connection
     {
         $connection = parent::connect();
         try {
-            $query = 'SELECT count(*) as num FROM compra';
+            $query = 'SELECT count(id_compra) as num FROM compra';
             $data =  $connection->query($query, PDO::FETCH_ASSOC)->fetchAll();
             return $data;
         } catch (Exception $e) {

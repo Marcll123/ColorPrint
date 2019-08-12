@@ -1,37 +1,30 @@
 <?php
-        require_once '../helpers/Auth.php';
-        require_once '../controllers/WayToPayController.php';
-        header('Content-Type: application/json');
+require_once '../helpers/Auth.php';
+require_once '../controllers/WayToPayController.php';
+header('Access-Control-Allow-Origin: http://localhost:8080');
+header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept, token");
+header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE');
+header('Content-Type: application/json');
 
-        $headers = apache_request_headers();
-        $jwt= $headers['token'];
+$newWayToPay = new WayToPayController();
+switch ($_SERVER['REQUEST_METHOD']) {
+        case 'GET':
+                $data = $newWayToPay->show();
+                echo json_encode($data);
+                break;
 
-        $auth=new Auth();
-        $data=$auth->decodeToken($jwt);
+        case 'POST':
+                $data = $newWayToPay->save();
+                echo $data;
+                break;
 
+        case 'PUT':
+                $data = $newWayToPay->update();
+                echo  $data;
+                break;
 
-                $newWayToPay = new WayToPayController();
-                switch($_SERVER['REQUEST_METHOD']){
-                        case 'GET':
-                        $data = $newWayToPay->show();
-                        echo json_encode($data);
-                        break;
-        
-                        case 'POST':
-                        $data = $newWayToPay->save();
-                        echo $data;
-                        break;
-        
-                       case 'PUT':
-                        $data = $newWayToPay->update();
-                        echo  $data;
-                        break;
-        
-                        case 'DELETE':
-                        $data = $newWayToPay->delete();
-                        echo  $data;
-                        break;
-                      
-                }
-             
-?>
+        case 'DELETE':
+                $data = $newWayToPay->delete();
+                echo  $data;
+                break;
+}

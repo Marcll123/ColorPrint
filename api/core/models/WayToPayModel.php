@@ -1,11 +1,10 @@
 <?php
-
-      require_once '../helpers/connection.php';
-    
+//Se incluye el archivo PHP de conexión con la base de datos
+require_once '../helpers/connection.php';
+//Se crea la clase Actions model que tiene las funciones para obtener los datos de la base de datos
       class WayToPayModel extends Connection {
-        public $id = null;
-        public $waypay = null;
 
+        //Función para realizar la consulta de los datos 
         public function consult($num)
         {
             $connection = parent::connect();
@@ -14,7 +13,7 @@
                 $page = 1+$num;
                 $page = $page-1;
                 $p = $page*$rowpaper;
-                $query = 'SELECT * FROM formapago  limit '.$p.', '.$rowpaper;
+                $query = 'SELECT id_forma, forma_pago FROM formapago limit '.$p.', '.$rowpaper;
                 $data=  $connection->query($query,PDO::FETCH_ASSOC)->fetchAll();
               return $data;
             } catch (Exception $e) {
@@ -27,10 +26,11 @@
             }
         }
 
+        //Función para obtener el número de datos 
         public function consultNum(){         
             $connection = parent::connect();
             try {                   
-                $query = 'SELECT count(*) as num FROM formapago';
+                $query = 'SELECT count(id_forma) as num FROM formapago';
                 $data=  $connection->query($query,PDO::FETCH_ASSOC)->fetchAll();
                 return $data;
             } catch (Exception $e) {
@@ -43,6 +43,7 @@
             }
         }
 
+        //Función para realizar la acción de crear un nuevo dato
         public function createWaytopay($waypay){
             $conexion = parent::connect();       
             try {
@@ -65,6 +66,7 @@
             }
         }
 
+        //Función para actualizar los datos
         public function updateWaytopay($account, $id){
             $conexion = parent::connect();       
             try {
@@ -87,6 +89,7 @@
             }
         }
 
+        //Función para eliminar los datos
         public function deleteWaytopay($id){
             $conexion = parent::connect();       
             try {

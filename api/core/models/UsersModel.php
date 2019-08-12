@@ -11,7 +11,7 @@ class UserModel extends Connection
         $p = $page * $rowpaper;
         $connection = parent::connect();
         try {
-            $query = 'SELECT id_usuario, nombre, apellido, genero, nombre_usu , correo, clave, id_rol FROM usuarios limit ' . $p . ', ' . $rowpaper;
+            $query = 'SELECT id_usuario, nombre, apellido, genero, nombre_usu , correo, clave, roles.roles FROM usuarios INNER JOIN roles ON usuarios.id_rol = roles.id_rol limit ' . $p . ', ' . $rowpaper;
             $data =  $connection->query($query, PDO::FETCH_ASSOC)->fetchAll();
             return $data;
         } catch (Exception $e) {

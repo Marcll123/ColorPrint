@@ -32,11 +32,11 @@ class Purchase extends Component {
       ],
       keys: [
         "numerodocumento",
-        "id_proveedor",
+        "nombre_prove",
         "direccion",
         "serie_costo",
-        "id_tipocompra",
-        "id_forma",
+        "tipo_compra",
+        "forma_pago",
         "num_compra",
         "dai"
       ],
@@ -265,7 +265,7 @@ class Purchase extends Component {
                     <div className="d-flex justify-content-center">
                       <Pagination
                         activePage={this.state.val2}
-                        itemsCountPerPage={5}
+                        itemsCountPerPage={10}
                         totalItemsCount={this.totalItemsCount2}
                         onChange={this.handlePageChange2}
                         itemClass="page-item"
@@ -310,7 +310,7 @@ class Purchase extends Component {
                       <div className="d-flex justify-content-center">
                         <Pagination
                           activePage={this.state.val}
-                          itemsCountPerPage={5}
+                          itemsCountPerPage={10}
                           totalItemsCount={this.totalItemsCount}
                           onChange={this.handlePageChange}
                           itemClass="page-item"

@@ -6,50 +6,62 @@ class PurchaseDController
     public function show()
     {
         $PurchaseD = new PurchaseDModel();
-        $page = $_REQUEST['page'];
-        return $PurchaseD->consult($page - 1);
+        if (isset($_REQUEST['page']) && preg_match('/^[a-z0-9]+$/', $_REQUEST['page'])) {
+            $page = $_REQUEST['page'];
+            return $PurchaseD->consult($page - 1);
+        }
     }
     public function showNum()
     {
-        $detail2 = new PurchaseDModel();
-        return $detail2->consultNum();
+        $PurchaseDNum = new PurchaseDModel();
+        return $PurchaseDNum->consultNum();
     }
     public function save()
     {
-        $product  = $_POST['id_producto'];
-        $quantity = $_POST['cantidad'];
-        $description = $_POST['descripcion'];
-        $priceu = $_POST['precio_uni'];
-        $totale = $_POST['total_exeno'];
-        $totalt = $_POST['total_grabado'];
-        $purchase = $_POST['id_compra'];
+        if (
+            isset($_POST['id_producto']) && isset($_POST['cantidad']) && isset($_POST['descripcion']) &&
+            isset($_POST['precion_uni']) && isset($_POST['total_exeno']) && isset($_POST['total_grabado']) &&
+            isset($_POST['id_compra'])
+        ) {
+            $product  = $_POST['id_producto'];
+            $quantity = $_POST['cantidad'];
+            $description = $_POST['descripcion'];
+            $priceu = $_POST['precio_uni'];
+            $totale = $_POST['total_exeno'];
+            $totalt = $_POST['total_grabado'];
+            $purchase = $_POST['id_compra'];
 
-        $PurchaseDI = new PurchaseDModel();
-        return $PurchaseDI->createPurchaseD($product, $quantity, $description, $priceu, $totale, $totalt, $purchase);
+            $PurchaseDCreate = new PurchaseDModel();
+            return $PurchaseDCreate->createPurchaseD($product, $quantity, $description, $priceu, $totale, $totalt, $purchase);
+        }
     }
 
     public function update()
     {
-        $id = $_REQUEST['id'];
-        $body = json_decode(file_get_contents("php://input"));
+        if (isset($_REQUEST['id']) && preg_match('/^[a-z0-9]+$/', $_REQUEST['id'])) {
+            $id = $_REQUEST['id'];
+            $body = json_decode(file_get_contents("php://input"));
 
-        $PurchaseDU = new PurchaseDModel();
-        return $PurchaseDU->updatePurchaseD(
-            $body->id_producto,
-            $body->cantidad,
-            $body->descripcion,
-            $body->precio_uni,
-            $body->total_exeno,
-            $body->total_grabado,
-            $body->id_compra,
-            $id
-        );
+            $PurchaseDUpdate = new PurchaseDModel();
+            return $PurchaseDUpdate->updatePurchaseD(
+                $body->id_producto,
+                $body->cantidad,
+                $body->descripcion,
+                $body->precio_uni,
+                $body->total_exeno,
+                $body->total_grabado,
+                $body->id_compra,
+                $id
+            );
+        }
     }
 
     public function delete()
     {
-        $id = $_REQUEST['id'];
-        $PurchaseDE = new PurchaseDModel();
-        return $PurchaseDE->deletePurchaseD($id);
+        if (isset($_REQUEST['id']) && preg_match('/^[a-z0-9]+$/', $_REQUEST['id'])) {
+            $id = $_REQUEST['id'];
+            $PurchaseDDelete = new PurchaseDModel();
+            return $PurchaseDDelete->deletePurchaseD($id);
+        }
     }
 }

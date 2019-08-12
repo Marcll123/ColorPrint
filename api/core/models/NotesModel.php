@@ -1,11 +1,7 @@
 <?php
-     require_once '../helpers/connection.php';
+     require_once '../helpers/Connection.php';
      
      class NotesModel extends Connection {
-        public $id = null; 
-        public $name_note = null;
-        public $description = null;
-        public $id_user = null;
      
         public function consult($num)
         {

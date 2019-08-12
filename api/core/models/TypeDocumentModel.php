@@ -1,11 +1,11 @@
 <?php
-     require_once '../helpers/connection.php';
-     
-     class UserModel extends Connection {
-        public $id = null; 
-        public $typeDocument = null;
-      
-        
+//Se incluye el archivo PHP de conexión con la base de datos
+require_once '../helpers/connection.php';
+
+//Se crea la clase TypeDocument model que tiene las funciones para obtener los datos de la base de datos
+     class TypeDocumentModel extends Connection {
+
+        //Función para realizar la consulta de los datos 
         public function consult($num)
         {
             $connection = parent::connect();
@@ -14,7 +14,7 @@
                 $page = 1+$num;
                 $page = $page-1;
                 $p = $page*$rowpaper;
-                $query = 'SELECT * FROM tipocdocumento  limit '.$p.', '.$rowpaper;
+                $query = 'SELECT id_tipodoc, tipo_docmento FROM tipodocumento limit '.$p.', '.$rowpaper;
                 $data=  $connection->query($query,PDO::FETCH_ASSOC)->fetchAll();
               return $data;
             } catch (Exception $e) {
@@ -27,10 +27,11 @@
             }
         }
 
+        //Función para obtener el número de datos 
         public function consultNum(){         
             $connection = parent::connect();
             try {                   
-                $query = 'SELECT count(*) as num FROM tipodocumento';
+                $query = 'SELECT count(id_tipodoc) as num FROM tipodocumento';
                 $data=  $connection->query($query,PDO::FETCH_ASSOC)->fetchAll();
                 return $data;
             } catch (Exception $e) {
@@ -43,6 +44,7 @@
             }
         }
 
+        //Función para realizar la acción de crear un nuevo dato
         public function createTypeDocument($typeDocument){
             $conexion = parent::connect();       
             try {
@@ -65,6 +67,7 @@
             }
         }
 
+         //Función para actualizar los datos
         public function updateTypeDocument($typeDocument, $id){
             $conexion = parent::connect();       
             try {
@@ -87,6 +90,7 @@
             }
         }
 
+         //Función para eliminar los datos
         public function deleteTypeDocument($id){
             $conexion = parent::connect();       
             try {

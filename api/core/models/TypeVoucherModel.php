@@ -1,11 +1,11 @@
 <?php
-     require_once '../helpers/connection.php';
-     
-     class VoucherModel extends Connection {
-        public $id = null; 
-        public $typeVoucher = null;
-      
-        
+//Se incluye el archivo PHP de conexión con la base de datos
+require_once '../helpers/connection.php';
+
+//Se crea la clase Actions model que tiene las funciones para obtener los datos de la base de datos
+     class TypeVoucherModel extends Connection {
+
+ //Función para realizar la consulta de los datos 
         public function consult($num)
         {
             $connection = parent::connect();
@@ -14,7 +14,7 @@
                 $page = 1+$num;
                 $page = $page-1;
                 $p = $page*$rowpaper;
-                $query = 'SELECT * FROM tipo_comprobante  limit '.$p.', '.$rowpaper;
+                $query = 'SELECT id_tipocom, tipo_compro FROM tipo_comprobante limit '.$p.', '.$rowpaper;
                 $data=  $connection->query($query,PDO::FETCH_ASSOC)->fetchAll();
               return $data;
             } catch (Exception $e) {
@@ -27,10 +27,11 @@
             }
         }
 
+        //Función para obtener el número de datos 
         public function consultNum(){         
             $connection = parent::connect();
             try {                   
-                $query = 'SELECT count(*) as num FROM tipo_comprobante';
+                $query = 'SELECT count(id_tipocom) as num FROM tipo_comprobante';
                 $data=  $connection->query($query,PDO::FETCH_ASSOC)->fetchAll();
                 return $data;
             } catch (Exception $e) {
@@ -43,10 +44,11 @@
             }
         }
 
+        //Función para realizar la acción de crear un nuevo dato
         public function createTypeVoucher($typeVoucher){
             $conexion = parent::connect();       
             try {
-                $query = 'INSERT INTO Tipo_comprobante(tipo_compro) VALUES (?)';
+                $query = 'INSERT INTO tipo_comprobante(tipo_compro) VALUES (?)';
                 $conexion->prepare($query)->execute(array($typeVoucher));
                 $array = [
                     'message' => 'He insertado un registro',
@@ -65,6 +67,7 @@
             }
         }
 
+        //Función para actualizar los datos
         public function updateTypeVoucher($typeVoucher, $id){
             $conexion = parent::connect();       
             try {
@@ -87,6 +90,7 @@
             }
         }
 
+        //Función para eliminar los datos
         public function deleteTypeVoucher($id){
             $conexion = parent::connect();       
             try {

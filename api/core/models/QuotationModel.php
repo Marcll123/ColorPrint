@@ -1,16 +1,9 @@
 <?php
-
-      require_once '../helpers/connection.php';
+//Se incluye el archivo PHP de conexión con la base de datos
+require_once '../helpers/connection.php';
     
-      class ClientModel extends Connection {
-        public $idq = null;
-        public $quantity = null;
-        public $product = null;
-        public $price = null;
-        public $discount = null;
-        public $client = null;
-        public $total = null;
-
+      class QuatationModel extends Connection {
+        //Función para realizar la consulta de los datos   
         public function consult($num)
         {
             $connection = parent::connect();
@@ -19,7 +12,7 @@
                 $page = 1+$num;
                 $page = $page-1;
                 $p = $page*$rowpaper;
-                $query = 'SELECT * FROM cotizaciones  limit '.$p.', '.$rowpaper;
+                $query = 'SELECT id_cotizacion, cantidad, descripcion, precio_unitario, cliente.cliente, total, numero_cotizacion FROM cotizaciones INNER JOIN cliente ON cotizaciones.id_cliente = cliente.id_cliente  limit '.$p.', '.$rowpaper;
                 $data=  $connection->query($query,PDO::FETCH_ASSOC)->fetchAll();
               return $data;
             } catch (Exception $e) {
@@ -32,10 +25,11 @@
             }
         }
 
+        //Función para obtener el número de datos 
         public function consultNum(){         
             $connection = parent::connect();
             try {                   
-                $query = 'SELECT count(*) as num FROM cotizaciones';
+                $query = 'SELECT count(id_cotizacion) as num FROM cotizaciones';
                 $data=  $connection->query($query,PDO::FETCH_ASSOC)->fetchAll();
                 return $data;
             } catch (Exception $e) {
@@ -48,11 +42,12 @@
             }
         }
 
-        public function createQuotation($quantity , $product, $price, $discount, $client, $total){
+        //Función para realizar la acción de crear un nuevo dato
+        public function createQuotation($quantity , $description, $price, $client, $total, $num_quatation){
             $conexion = parent::connect();       
             try {
-                $query = 'INSERT INTO cotizaciones(cantidad, id_producto, precio, descuento, id_cliente, total) VALUES (?,?,?,?,?,?)';
-                $conexion->prepare($query)->execute(array($role , $permits));
+                $query = 'INSERT INTO cotizaciones(cantidad, descripcion, precio_unitario, id_cliente, total, numerp_cotizacion) VALUES (?,?,?,?,?,?)';
+                $conexion->prepare($query)->execute(array($quantity , $description, $price, $client, $total, $num_quatation));
                 $array = [
                     'message' => 'He insertado un registro',
                     'type' => 'success',
@@ -70,11 +65,12 @@
             }
         }
 
-        public function updateQuotation$quantity , $product, $price, $discount, $client, $total, $idq){
+          //Función para actualizar los datos
+        public function updateQuotation($quantity , $description, $price, $client, $total, $num_quatation, $id){
             $conexion = parent::connect();       
             try {
-                $query = 'UPDATE cotizaciones SET cantidad=?, id_producto=?, precio=?, descuento=?, id_cliente=?, total=? WHERE id_cotizacion=?';
-                $conexion->prepare($query)->execute(array($role , $permits, $id));
+                $query = 'UPDATE cotizaciones SET cantidad=?, descripcion=?, precio=?, id_cliente=?, total=?, numero_cotizacion WHERE id_cotizacion=?';
+                $conexion->prepare($query)->execute(array($quantity , $description, $price, $client, $total, $num_quatation, $id));
                 $array = [
                     'message' => 'He actualizado un registro',
                     'type' => 'success',
@@ -92,7 +88,8 @@
             }
         }
 
-        public function deleteShop($idq){
+        //Función para eliminar los datos
+        public function deleteQuatation($id){
             $conexion = parent::connect();       
             try {
                 $query = 'DELETE FROM cotizaciones WHERE id_cotizacion=?';

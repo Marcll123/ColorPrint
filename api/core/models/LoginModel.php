@@ -1,22 +1,25 @@
 <?php
-require_once '../helpers/Connection.php';
+
+require_once '../helpers/connection.php';
 require_once '../helpers/Auth.php';
 class LoginModel extends Connection
 {
-    public function loginUser($email, $pass)
+
+    public function loginUser($username)
     {
         $conexion = parent::connect();
         try {
-            $sql = $conexion->prepare('SELECT correo FROM usuarios WHERE correo = ?');
-            $sql->execute(array($email));
+
+            $sql = $conexion->prepare('SELECT nombre_usu FROM usuarios WHERE nombre_usu = ?');
+            $sql->execute(array($username));
             $res = $sql->fetchAll();
             foreach ($res as $row) {
-                if ($email === $row['correo']) {
+                if ($username === $row['nombre_usu']) {
                     $auth = new Auth();
                     $token = $auth->generateToken(20);
                     $array = [
                         'token' => $token,
-                        'username' => $email,
+                        'username' => $username,
                         'permission' => [1, 2, 3]
 
                     ];

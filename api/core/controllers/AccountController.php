@@ -1,37 +1,55 @@
 <?php
-     require_once '../models/AccountModel.php';
-     
-     class ActionsController{
-        public function show(){    
-            $account = new AccountModel();
+//Se incluye el archivo PHP que cuenta con las funciones para el manejo de los datos
+require_once '../models/AccountModel.php';
+
+class AccountController
+{
+    //Función para mostrar los datos en caso de que se haga una petición
+    public function show()
+    {
+        $account = new AccountModel();
+        if (isset($_REQUEST['page']) && preg_match('/^[a-z0-9]+$/', $_REQUEST['page'])) {
             $page = $_REQUEST['page'];
-            return $user->consult($page-1);
+            return $account->consult($page - 1);
         }
-        public function showNum(){    
-            $detail2 = new AccountModel();
-            return $detail2->consultNum();
-        }
-        public function save(){      
+    }
+
+    //Función para mostrar el numero de datos que tiene la tabla cuenta
+    public function showNum()
+    {
+        $accountNum = new AccountModel();
+        return $accountNum->consultNum();
+    }
+
+    //Función para crear una nueva cuenta
+    public function save()
+    {
+        $accountSave = new AccountModel();
+        if (isset($_POST['cuenta'])) {
             $account  = $_POST['cuenta'];
-            $id= $_POST['id'];
-
-            $userI = new AccountModel();
-            return $accountI->createUser($account, $id);
+            return $accountSave->createAccount($account);
         }
+    }
 
-        public function update(){
+    //funcion para actulizar un dato de cuenta
+    public function update()
+    {
+        if (isset($_REQUEST['id']) && preg_match('/^[a-z0-9]+$/', $_REQUEST['id'])) {
             $id = $_REQUEST['id'];
-            $body = json_decode(file_get_contents("php://input"));    
-         
-            $userU = new AccountModel();
-            return $accountU->updateAccount($body->account, $id);
-        }
+            $body = json_decode(file_get_contents("php://input"));
 
-        public function delete(){
+            $accountUpdate = new AccountModel();
+            return $accountUpdate->updateAccount($body->account, $id);
+        }
+    }
+
+    //Función para eliminar campos de la tabla cuenta 
+    public function delete()
+    {
+        if (isset($_REQUEST['id']) && preg_match('/^[a-z0-9]+$/', $_REQUEST['id'])) {
             $id = $_REQUEST['id'];
-            $accountE = new AccountModel();
-            return $accountE->deleteaccount($id);
+            $accountDelete = new AccountModel();
+            return $accountDelete->deleteAccount($id);
         }
-     }
-
-?>
+    }
+}

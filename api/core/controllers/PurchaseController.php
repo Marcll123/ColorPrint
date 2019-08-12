@@ -5,81 +5,77 @@ class PurchaseController
 {
     public function show()
     {
-        $shops = new PurchaseModel();
-        $page = $_REQUEST['page'];
-        return $shops->consult($page - 1);
+        $purchase = new PurchaseModel();
+        if (isset($_REQUEST['page']) && preg_match('/^[a-z0-9]+$/', $_REQUEST['page'])) {
+            $page = $_REQUEST['page'];
+            return $purchase->consult($page - 1);
+        }
     }
     public function showNum()
     {
-        $detail2 = new PurchaseModel();
-        return $detail2->consultNum();
+        $purchaseNum = new PurchaseModel();
+        return $purchaseNum->consultNum();
     }
     public function save()
     {
-        if(isset($_POST['numerodocumento'])) {
+        if (
+            isset($_POST['numerodocumento']) && isset($_POST['id_proveedor']) && isset($_POST['direccion']) &&
+            isset($_POST['bodega']) && isset($_POST['id_tipodoc']) && isset($_POST['serie_costo']) &&
+            isset($_POST['id_tipocompra']) && isset($_POST['id_forma']) && isset($_POST['id_origencom']) &&
+            isset($_POST['num_registro']) && isset($_POST['num_compra']) && isset($_POST['dai']) &&
+            isset($_POST['doc_excluidos'])
+        ) {
             $numberdocu  = $_POST['numerodocumento'];
-        }  
-        if(isset($_POST['id_proveedor'])) {
             $supplier = $_POST['id_proveedor'];
-        }  
-        if(isset($_POST['direccion'])) {
             $address = $_POST['direccion'];
-        } 
-        if(isset($_POST['bodega'])) {
             $winery  = $_POST['bodega'];
-        } 
-        if(isset($_POST['id_tipodoc'])) {
             $typec = $_POST['id_tipodoc'];
-        } 
-        if(isset($_POST['serie_costo'])) {
             $seriescos = $_POST['serie_costo'];
-        } 
-        if(isset($_POST['id_tipocompra'])) {
             $typepur  = $_POST['id_tipocompra'];
-        } 
-        if(isset($_POST['id_forma'])) {
             $way = $_POST['id_forma'];
-        } 
-        if(isset($_POST['id_origencom'])) {
             $idorigin = $_POST['id_origencom'];
-        } 
-        if(isset( $_POST['num_registro'])) {
             $numregi  = $_POST['num_registro'];
-        } 
-
-        if(isset($_POST['num_compra'])) {
             $purchasenum = $_POST['num_compra'];
-        } 
-
-        if(isset($_POST['dai'])) {
             $dai = $_POST['dai'];
-        } 
-
-        if(isset( $_POST['doc_excluidos'])) {
             $excludeddoc  = $_POST['doc_excluidos'];
-        } 
 
-    
-
-        $shopI = new PurchaseModel();
-        return $shopI->createShop($numberdocu, $supplier, $address, $winery, $typec, $seriescos, $typepur, $way, $idorigin, $numregi, $purchasenum, $dai, $excludeddoc);
+            $purchaseCreate = new PurchaseModel();
+            return $purchaseCreate->createShop($numberdocu, $supplier, $address, $winery, $typec, $seriescos, $typepur, $way, $idorigin, $numregi, $purchasenum, $dai, $excludeddoc);
+        }
     }
 
     public function update()
     {
-        $id = $_REQUEST['id'];
-        $body = json_decode(file_get_contents("php://input"));
+        if (isset($_REQUEST['id']) && preg_match('/^[a-z0-9]+$/', $_REQUEST['id'])) {
+            $id = $_REQUEST['id'];
+            $body = json_decode(file_get_contents("php://input"));
 
-        $shopU = new PurchaseModel();
-        return $shopU->updateshop($body->numerodocumento, $body->id_proveedor, $body->direccion, $body->bodega,
-         $body->id_tipodoc, $body->serie_costo,$body->id_tipocompra, $body->id_forma, $body->id_origencom, $body->num_registro, $body->num_compra,
-          $body->dai, $body->doc_excluidos, $id);
+            $purchaseUpdate = new PurchaseModel();
+            return $purchaseUpdate->updateshop(
+                $body->numerodocumento,
+                $body->id_proveedor,
+                $body->direccion,
+                $body->bodega,
+                $body->id_tipodoc,
+                $body->serie_costo,
+                $body->id_tipocompra,
+                $body->id_forma,
+                $body->id_origencom,
+                $body->num_registro,
+                $body->num_compra,
+                $body->dai,
+                $body->doc_excluidos,
+                $id
+            );
+        }
     }
 
     public function delete()
     {
-        $id = $_REQUEST['id'];
-        $shopE = new PurchaseModel();
-        return $shopE->deleteShop($id);
+        if (isset($_REQUEST['id']) && preg_match('/^[a-z0-9]+$/', $_REQUEST['id'])) {
+            $id = $_REQUEST['id'];
+            $purchaseDelete = new PurchaseModel();
+            return $purchaseDelete->deleteShop($id);
+        }
     }
 }

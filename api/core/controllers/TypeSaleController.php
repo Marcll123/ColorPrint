@@ -5,35 +5,43 @@ class TypeSaleController
 
     public function show()
     {
-        $Tsale = new TypeSaleModel();
-        $page = $_REQUEST['page'];
-        return $Tsale->consult($page - 1);
+        $typesale = new TypeSaleModel();
+        if (isset($_REQUEST['page']) && preg_match('/^[a-z0-9]+$/', $_REQUEST['page'])) {
+            $page = $_REQUEST['page'];
+            return $typesale->consult($page - 1);
+        }
     }
     public function showNum()
     {
-        $detail2 = new TypeSaleModel();
-        return $detail2->consultNum();
+        $typesaleNum = new TypeSaleModel();
+        return $typesaleNum->consultNum();
     }
     public function save()
     {
-        $TypeSale  = $_POST['venta'];
-        $TsaleI = new TypeSaleModel();
-        return $TsaleI->createTypeSale($TypeSale);
+        if (isset($_POST['tipo_venta'])) {
+            $TypeSale  = $_POST['tipo_venta'];
+            $typesaleCreate = new TypeSaleModel();
+            return $typesaleCreate->createTypeSale($TypeSale);
+        }
     }
 
     public function update()
     {
-        $id = $_REQUEST['id'];
-        $body = json_decode(file_get_contents("php://input"));
+        if (isset($_REQUEST['id']) && preg_match('/^[a-z0-9]+$/', $_REQUEST['id'])) {
+            $id = $_REQUEST['id'];
+            $body = json_decode(file_get_contents("php://input"));
 
-        $TsaleU = new TypeSaleModel();
-        return $TsaleU->updateTypeSale($body->venta,  $id);
+            $typesaleUpdate = new TypeSaleModel();
+            return $typesaleUpdate->updateTypeSale($body->venta,  $id);
+        }
     }
 
     public function delete()
     {
-        $id = $_REQUEST['id'];
-        $TsaleE = new TypeSaleModel();
-        return $TsaleE->deleteTypeSale($id);
+        if (isset($_REQUEST['id']) && preg_match('/^[a-z0-9]+$/', $_REQUEST['id'])) {
+            $id = $_REQUEST['id'];
+            $typesaleDelete = new TypeSaleModel();
+            return $typesaleDelete->deleteTypeSale($id);
+        }
     }
 }

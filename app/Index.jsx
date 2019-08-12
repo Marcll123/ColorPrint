@@ -9,14 +9,16 @@ import Purchase from './components/Purchase/Purchase.jsx'
 import Sales from './components/Sales/Sales.jsx'
 import TypeSales from './components/TypeSales/TypeSales.jsx'
 import TypeBuy from './components/TypeBuy/TypeBuy.jsx'
-import {BrowserRouter as Router, Route} from 'react-router-dom'
+import Chart from './components/Chart/Chart.jsx'
+import {BrowserRouter as Router, Route, Switch} from 'react-router-dom'
 
 class App extends Component{
     render(){
         return(
             <Router>
                 <div className="App">
-                    <Route path="/" exact render={()=>{
+                   <Switch>
+                   <Route path="/" exact render={()=>{
                            return(<Login></Login>)
                     }}></Route>
                     <Route path="/login" exact render={()=>{
@@ -43,6 +45,18 @@ class App extends Component{
                      <Route path="/tipocompras" exact render={()=>{
                         return(<TypeBuy></TypeBuy>)
                     }}></Route>
+                     <Route path="/graficos" exact render={()=>{
+                        return(<Chart></Chart>)
+                    }}></Route>
+
+                    <Route component={() =>(
+                       <div>
+                           <h1>Error 404</h1>
+                       <span>Pagina no encontrada</span>
+                       </div>
+                    )} />
+
+                   </Switch>
                 </div>
             </Router>
         )

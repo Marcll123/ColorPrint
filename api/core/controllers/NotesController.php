@@ -4,9 +4,12 @@
 
         public function show(){    
             $note = new NotesModel();
-            $page = $_REQUEST['page'];
-            return $note->consult($page-1);
+            if (isset($_REQUEST['page']) && preg_match('/^[a-z0-9]+$/', $_REQUEST['page'])) {
+                $page = $_REQUEST['page'];
+                return $note->consult($page-1);
+            }
         }
+
         public function showNum(){    
             $detail2 = new NotesModel();
             return $detail2->consultNum();

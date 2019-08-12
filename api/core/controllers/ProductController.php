@@ -1,43 +1,57 @@
 <?php
-    require_once '../models/ProductModel.php';
-    class ProductController{
+require_once '../models/ProductModel.php';
+class ProductController
+{
 
-        public function show(){    
-            $product = new ProductModel();
+    public function show()
+    {
+        $product = new ProductModel();
+        if (isset($_REQUEST['page']) && preg_match('/^[a-z0-9]+$/', $_REQUEST['page'])) {
             $page = $_REQUEST['page'];
-            return $product->consult($page-1);
+            return $product->consult($page - 1);
         }
-        public function showNum(){    
-            $detail2 = new ProductModel();
-            return $detail2->consultNum();
-        }
-        public function save(){      
-            $product  = $_POST['nameProduct'];
-            $price = $_POST['priceProduct'];
-            $description = $_POST['descriptionProduct'];
-            $idProvider = $_POST['typeProvider'];
+    }
+    public function showNum()
+    {
+        $productNum = new ProductModel();
+        return $productNum->consultNum();
+    }
+    public function save()
+    {
+        if (isset($_POST['nombre_produc']) && isset($_POST['precio_uni']) && isset($_POST['descripcion']) && isset($_POST['id_proveedor'])) {
+            $product  = $_POST['nombre_produc'];
+            $price = $_POST['precio_uni'];
+            $description = $_POST['descripcion'];
+            $idProvider = $_POST['id_proveedor'];
 
-            $productI = new ProductModel();
-            return $productI->createProduct($product , $price, $description,  $idProvider);
+            $productCreate = new ProductModel();
+            return $productCreate->createProduct($product, $price, $description,  $idProvider);
         }
-
-        public function update(){
-            $id = $_REQUEST['id'];
-            $body = json_decode(file_get_contents("php://input"));    
-         
-            $productU = new ProductModel();
-            return $productU->updateProduct($body->nameProduct, $body->priceProduct, 
-            $body->descriptionProduct, $body->typeProvider, $id);
-        }
-
-        public function delete(){
-            $id = $_REQUEST['id'];
-            $productE = new ProductModel();
-            return $productE->deleteUser($id);
-        }
-
-     
     }
 
-    
-?>
+    public function update()
+    {
+        if (isset($_REQUEST['id']) && preg_match('/^[a-z0-9]+$/', $_REQUEST['id'])) {
+            $id = $_REQUEST['id'];
+            $body = json_decode(file_get_contents("php://input"));
+
+            $productUpdate = new ProductModel();
+            return $productUpdate->updateProduct(
+                $body->nombre_produc,
+                $body->precio_uni,
+                $body->descripcion,
+                $body->id_proveedor,
+                $id
+            );
+        }
+    }
+
+    public function delete()
+    {
+        if (isset($_REQUEST['id']) && preg_match('/^[a-z0-9]+$/', $_REQUEST['id'])) {
+            $id = $_REQUEST['id'];
+            $productDelete = new ProductModel();
+            return $productDelete->deleteProduct($id);
+        }
+    }
+}

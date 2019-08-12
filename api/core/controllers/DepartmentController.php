@@ -1,37 +1,48 @@
 <?php
-     require_once '../models/DepartmentModel.php';
-     
-     class DepartmentController{
-        public function show(){    
-            $department = new DepartmentModel();
+require_once '../models/DepartmentModel.php';
+
+class DepartmentController
+{
+    public function show()
+    {
+        $department = new DepartamentModel();
+        if (isset($_REQUEST['page']) && preg_match('/^[a-z0-9]+$/', $_REQUEST['page'])) {
             $page = $_REQUEST['page'];
-            return $user->consult($page-1);
+            return $department->consult($page - 1);
         }
-        public function showNum(){    
-            $detail2 = new DepartmentModel();
-            return $detail2->consultNum();
-        }
-        public function save(){      
+    }
+    public function showNum()
+    {
+        $departmentNum = new DepartamentModel();
+        return $departmentNum->consultNum();
+    }
+    public function save()
+    {
+        if (isset($_POST['departamento'])) {
             $department  = $_POST['departamento'];
-            $id= $_POST['id'];
 
-            $departmentI = new DepartmentModel();
-            return $departmentI->createUser($department, $id);
+            $departmentCreate = new DepartamentModel();
+            return $departmentCreate->createDepartment($department);
         }
+    }
 
-        public function update(){
+    public function update()
+    {
+        if (isset($_REQUEST['id']) && preg_match('/^[a-z0-9]+$/', $_REQUEST['id'])) {
             $id = $_REQUEST['id'];
-            $body = json_decode(file_get_contents("php://input"));    
-         
-            $userU = new DepartmentModel();
-            return $accountU->updateAccount($body->department, $id);
-        }
+            $body = json_decode(file_get_contents("php://input"));
 
-        public function delete(){
+            $departmentUpdate = new DepartamentModel();
+            return $departmentUpdate->updateDepartment($body->department, $id);
+        }
+    }
+
+    public function delete()
+    {
+        if (isset($_REQUEST['id']) && preg_match('/^[a-z0-9]+$/', $_REQUEST['id'])) {
             $id = $_REQUEST['id'];
-            $departmentE = new DepartmentModel();
-            return $departmentE->deleteaccount($id);
+            $departmentDelete = new DepartamentModel();
+            return $departmentDelete->deleteDepartment($id);
         }
-     }
-
-?>
+    }
+}

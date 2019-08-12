@@ -34,6 +34,7 @@ class TypeBuy extends Component {
     this.handleSubmitiId = this.handleSubmitiId.bind(this);
     this.handlePagination = this.handlePagination.bind(this);
     this.handlePageChange = this.handlePageChange.bind(this);
+    
     this.Add = this.Add.bind(this);
     this.getdata;
     this.id = "";

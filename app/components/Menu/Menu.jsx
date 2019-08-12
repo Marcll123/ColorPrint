@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import "./Menu.css";
 import logo from "../../resources/img/logo2.PNG";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 class Menu extends Component {
   render() {
@@ -16,12 +16,14 @@ class Menu extends Component {
           <div className="list-group list-group-flush">
             {/*lINK Y TO ES UNA PROP DE REACT ROUTER DOM QUE SIRVE PARA EL MANEJO DE RUTAS Y LA NEGAVE
                       CION EN LA SPA */}
-            <Link
+            <NavLink
+              activeClassName="activo"
+              exact
               to="/start"
               className="list-group-item list-group-item-action bg-white hover"
             >
               Inicio
-            </Link>
+            </NavLink>
 
             {/*Modulo de Usuarios*/}
             <a
@@ -29,28 +31,32 @@ class Menu extends Component {
               data-toggle="collapse"
               className="list-group-item list-group-item-action bg-white hover"
             >
-              Usuarios<i className="fas fa-angle-down iconMove text-primary" />
+              Usuarios
+              <i className="fas fa-angle-down iconMove text-primary" />
             </a>
 
             <div id="userData" className="collapse">
               {/*lINK Y TO ES UNA PROP DE REACT ROUTER DOM QUE SIRVE PARA EL MANEJO DE RUTAS Y LA NEGAVE
                       CION EN LA SPA */}
-              <Link
+              <NavLink
                 to="/adminuser"
+                activeClassName="activo"
                 className="list-group-item list-group-item-action bg-white hover"
               >
-                <i className="fas fa-user iconli2 text-primary" />Administrar
-                usuarios
-              </Link>
+                <i className="fas fa-user iconli2 text-info" />
+                Administrar usuarios
+              </NavLink>
               {/*lINK Y TO ES UNA PROP DE REACT ROUTER DOM QUE SIRVE PARA EL MANEJO DE RUTAS Y LA NEGAVE
                       CION EN LA SPA */}
-              <Link
+              <NavLink
                 to="/clientes"
+                activeClassName="activo"
                 className="list-group-item list-group-item-action bg-white hover"
               >
-                <i className="fas fa-users-cog iconli text-success" />{" "}
+              
+                <i className="fas fa-user-tag iconli text-warning" />{" "}
                 Administrar clientes
-              </Link>
+              </NavLink>
             </div>
 
             {/*Modulo de Compras*/}
@@ -59,18 +65,20 @@ class Menu extends Component {
               data-toggle="collapse"
               className="list-group-item list-group-item-action bg-white hover"
             >
-              Compras<i className="fas fa-angle-down iconMove2 text-primary" />
+              Compras
+              <i className="fas fa-angle-down iconMove2 text-primary" />
             </a>
             <div id="shoppingData" className="collapse">
               {/*lINK Y TO ES UNA PROP DE REACT ROUTER DOM QUE SIRVE PARA EL MANEJO DE RUTAS Y LA NEGAVE
                       CION EN LA SPA */}
-              <Link
+              <NavLink
                 to="/compras"
+                activeClassName="activo"
                 className="list-group-item list-group-item-action bg-white hover"
               >
-                <i className="fas fa-shopping-bag iconli2 text-primary" />
+                <i className="fas fa-shopping-bag iconli2 text-info" />
                 Gestion compras
-              </Link>
+              </NavLink>
             </div>
 
             {/*Moduolo de Ventas*/}
@@ -79,35 +87,52 @@ class Menu extends Component {
               data-toggle="collapse"
               className="list-group-item list-group-item-action bg-white hover"
             >
-              Ventas<i className="fas fa-angle-down iconMove3 text-primary" />
+              Ventas
+              <i className="fas fa-angle-down iconMove3 text-primary" />
             </a>
             <div id="salesData" className="collapse">
               {/*lINK Y TO ES UNA PROP DE REACT ROUTER DOM QUE SIRVE PARA EL MANEJO DE RUTAS Y LA NEGAVE
                       CION EN LA SPA */}
-              <Link
+              <NavLink
                 to="/ventas"
+                activeClassName="activo"
                 className="list-group-item list-group-item-action bg-white hover"
               >
-                <i className="fas fa-cash-register iconli2 text-primary" />
+                <i className="fas fa-cash-register iconli2 text-info" />
                 Gestion ventas
-              </Link>
+              </NavLink>
               {/*lINK Y TO ES UNA PROP DE REACT ROUTER DOM QUE SIRVE PARA EL MANEJO DE RUTAS Y LA NEGAVE
                       CION EN LA SPA */}
-              <Link
+              <NavLink
                 to="/cotizaciones"
+                activeClassName="activo"
                 className="list-group-item list-group-item-action bg-white hover"
               >
-                <i className="fas fa-user iconli2 text-primary" />Cotizaciones
-              </Link>
+                <i className="fas fa-sticky-note iconli2 text-warning" />
+                Cotizaciones
+              </NavLink>
             </div>
             {/*Modulo de graficos*/}
             <a
-              href="#graphics"
+              href="#chart"
               data-toggle="collapse"
               className="list-group-item list-group-item-action bg-white hover"
             >
-              Graficos<i className="fas fa-angle-down iconMove4 text-primary" />
+              Graficos
+              <i className="fas fa-angle-down iconMove4 text-primary" />
             </a>
+            <div id="chart" className="collapse">
+              {/*lINK Y TO ES UNA PROP DE REACT ROUTER DOM QUE SIRVE PARA EL MANEJO DE RUTAS Y LA NEGAVE
+                      CION EN LA SPA */}
+              <NavLink
+                to="/graficos"
+                activeClassName="activo"
+                className="list-group-item list-group-item-action bg-white hover"
+              >
+                <i className="fas fa-chart-bar iconli2 text-info" />
+                Graficos personalibles
+              </NavLink>
+            </div>
 
             {/*Modulo de Administracion*/}
             <a
@@ -121,22 +146,24 @@ class Menu extends Component {
             <div id="administration" className="collapse">
               {/*lINK Y TO ES UNA PROP DE REACT ROUTER DOM QUE SIRVE PARA EL MANEJO DE RUTAS Y LA NEGAVE
                       CION EN LA SPA */}
-              <Link
+              <NavLink
                 to="/tipoventas"
+                activeClassName="activo"
                 className="list-group-item list-group-item-action bg-white hover"
               >
                 <i className="fas fa-money-check-alt iconli2 text-primary" />
                 Tipo ventas
-              </Link>
+              </NavLink>
               {/*lINK Y TO ES UNA PROP DE REACT ROUTER DOM QUE SIRVE PARA EL MANEJO DE RUTAS Y LA NEGAVE
                       CION EN LA SPA */}
-              <Link
+              <NavLink
                 to="/tipocompras"
+                activeClassName="activo"
                 className="list-group-item list-group-item-action bg-white hover"
               >
-                <i className="fas fa-shopping-cart iconli2 text-primary" />Tipo
-                compras
-              </Link>
+                <i className="fas fa-shopping-cart iconli2 text-primary" />
+                Tipo compras
+              </NavLink>
             </div>
           </div>
         </div>

@@ -1,40 +1,48 @@
 <?php
-    require_once '../models/RolesModel.php';
-    class UsersController{
+require_once '../models/RolesModel.php';
+class RolesController
+{
 
-        public function show(){    
-            $role = new RoleModel();
+    public function show()
+    {
+        $roles = new RolesModel();
+        if (isset($_REQUEST['page']) && preg_match('/^[a-z0-9]+$/', $_REQUEST['page'])) {
             $page = $_REQUEST['page'];
-            return $role->consult($page-1);
+            return $roles->consult($page - 1);
         }
-        public function showNum(){    
-            $detail2 = new RoleModel();
-            return $detail2->consultNum();
-        }
-        public function save(){      
-            $roles  = $_POST['nameRoles'];
-            
-
-            $roleI = new RoleModel();
-            return $roleI->createRole($roles);
-        }
-
-        public function update(){
-            $id = $_REQUEST['id'];
-            $body = json_decode(file_get_contents("php://input"));    
-         
-            $roleU = new RoleModel();
-            return $roleU->updateRole($body->nameRoles, $id);
-        }
-
-        public function delete(){
-            $id = $_REQUEST['id'];
-            $roleE = new RoleModel();
-            return $roleE->deleteRole($id);
-        }
-
-     
+    }
+    public function showNum()
+    {
+        $rolesNum = new RolesModel();
+        return $rolesNum->consultNum();
     }
 
-    
-?>
+    public function save()
+    {
+        if (isset($_POST['roles'])) {
+            $roles  = $_POST['roles'];
+            $rolesCreate = new RolesModel();
+            return $rolesCreate->createRole($roles);
+        }
+    }
+
+    public function update()
+    {
+        if (isset($_REQUEST['id']) && preg_match('/^[a-z0-9]+$/', $_REQUEST['id'])) {
+            $id = $_REQUEST['id'];
+            $body = json_decode(file_get_contents("php://input"));
+
+            $rolesUpdate = new RolesModel();
+            return $rolesUpdate->updateRole($body->roles, $id);
+        }
+    }
+
+    public function delete()
+    {
+        if (isset($_REQUEST['id']) && preg_match('/^[a-z0-9]+$/', $_REQUEST['id'])) {
+            $id = $_REQUEST['id'];
+            $rolesDelete = new RolesModel();
+            return $rolesDelete->deleteRole($id);
+        }
+    }
+}

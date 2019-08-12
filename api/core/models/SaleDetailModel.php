@@ -1,9 +1,11 @@
 <?php
-
+//Se incluye el archivo PHP de conexión con la base de datos
 require_once '../helpers/connection.php';
 
+//Se crea la clase SalesDetail model que tiene las funciones para obtener los datos de la base de datos
 class SaleDetailModel extends Connection
 {
+    //Función para realizar la consulta de los datos 
     public function consult($num)
     {
         $connection = parent::connect();
@@ -12,7 +14,7 @@ class SaleDetailModel extends Connection
             $page = 1 + $num;
             $page = $page - 1;
             $p = $page * $rowpaper;
-            $query = 'SELECT * FROM detalleventa  limit ' . $p . ', ' . $rowpaper;
+            $query = 'SELECT id_detalleven, card_producto, umd, cantidad, descuento, v_nosujeta, v_efecta, t_p, descripcion, total_gravado, precio, v_conversion, u_conversion, total, id_venta from detalleventa limit ' . $p . ', ' . $rowpaper;
             $data =  $connection->query($query, PDO::FETCH_ASSOC)->fetchAll();
             return $data;
         } catch (Exception $e) {
@@ -25,11 +27,12 @@ class SaleDetailModel extends Connection
         }
     }
 
+ //Función para obtener el número de datos
     public function consultNum()
     {
         $connection = parent::connect();
         try {
-            $query = 'SELECT count(*) as num FROM detalleventa';
+            $query = 'SELECT count(id_detalleven) as num FROM detalleventa';
             $data =  $connection->query($query, PDO::FETCH_ASSOC)->fetchAll();
             return $data;
         } catch (Exception $e) {
@@ -42,6 +45,7 @@ class SaleDetailModel extends Connection
         }
     }
 
+     //Función para realizar la acción de crear un nuevo dato
     public function createSaled($cproduct, $umd, $quantity, $discount, $vnosubject, $veffector, $tp, $description, $total_e, $price, $vconversion, $uconversion, $total, $saleid)
     {
         $conexion = parent::connect();
@@ -64,6 +68,7 @@ class SaleDetailModel extends Connection
         }
     }
 
+    //Función para actualizar los datos
     public function updateSaled($cproduct, $umd, $quantity, $discount, $vnosubject, $veffector, $tp, $description, $total_e, $price, $vconversion, $uconversion, $total, $saleid, $id)
     {
         $conexion = parent::connect();
@@ -86,6 +91,7 @@ class SaleDetailModel extends Connection
         }
     }
 
+     //Función para eliminar los datos
     public function deleteSaled($id)
     {
         $conexion = parent::connect();

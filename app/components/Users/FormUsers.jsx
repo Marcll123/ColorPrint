@@ -43,7 +43,6 @@ class FormUsers extends Component {
                     text="Nombre:"
                     type="text"
                     id="UserName"
-                    validation="[A-Za-z]"
                     name="nombre"
                     onChange={this.handleImput}
                   />

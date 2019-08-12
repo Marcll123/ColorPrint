@@ -11,7 +11,7 @@ export class LoginService {
         this.url = `${API}/Login.php`;
     }
     async sendData(body) {
-        const response = await new HttpService(this.url, POST).setData(JSON.stringify(body)).setHeaders({'Content-Type': 'application/json'}).execute();
+        const response = await new HttpService(this.url, POST).setData(JSON.stringify(body)).execute();
         if (response.hasOwnProperty('res')) {
             return response.res;
         } else {

@@ -17,7 +17,7 @@ class Users extends Component {
     super(props);
     this.state = {
       titles: ["Nombre", "Apellidos", "Genero", "Usuario", "Correo", "Rol"],
-      keys: ["nombre", "apellido", "genero", "nombre_usu", "correo", "id_rol"],
+      keys: ["nombre", "apellido", "genero", "nombre_usu", "correo", "roles"],
       data: [],
       val: 1
     };
@@ -56,6 +56,7 @@ class Users extends Component {
       this.setState(prev => {
         const { data } = prev;
         return { data: [...res] };
+  
       });
     });
   }
@@ -168,7 +169,9 @@ class Users extends Component {
                 <div className="col-12">
                   <div className="card">
                     <div className="card-body">
-                      <Search textButton="Agregar usuario" modal="modal" target="#modal1" click={this.Add}/>
+                      <Search textButton="Agregar usuario"
+                       botontable={<a className="btn btn-outline-primary my-2 my-sm-2 my-2  ml-2 color-primary" href="http://localhost/storeveggy/src/pdf/PDF_users.php">PDF</a>} 
+                      modal="modal" target="#modal1" click={this.Add}/>
                       <Table
                         className="table table-responsive-sm table-responsive-md table-responsive-sm-xl
                         table-responsive-lg"

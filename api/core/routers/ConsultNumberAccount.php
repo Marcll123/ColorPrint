@@ -6,10 +6,10 @@
     header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE');
     header('Content-Type: application/json');
 
-    $newQuery = new ActionsController();
+    $newQuery = new AccountController();
 
     switch($_SERVER['REQUEST_METHOD']){
-        case 'GET':
+        case 'GET': 
         $data = $newQuery->showNum();
         echo json_encode($data);
         break;

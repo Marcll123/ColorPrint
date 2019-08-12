@@ -6,36 +6,43 @@ class TypeBuyController
     public function show()
     {
         $typebuy = new TypeBuyModel();
-        $page = $_REQUEST['page'];
-        return $typebuy->consult($page - 1);
+        if (isset($_REQUEST['page']) && preg_match('/^[a-z0-9]+$/', $_REQUEST['page'])) {
+            $page = $_REQUEST['page'];
+            return $typebuy->consult($page - 1);
+        }
     }
     public function showNum()
     {
-        $detail2 = new TypeBuyModel();
-        return $detail2->consultNum();
+        $typebuyNum = new TypeBuyModel();
+        return $typebuyNum->consultNum();
     }
     public function save()
     {
-        $typebuy  = $_POST['tipo_compra'];
-        $id = $_POST['id'];
+        if (isset($_POST['tipo_compra'])) {
+            $typebuy  = $_POST['tipo_compra'];
 
-        $typebuyI = new TypeBuyModel();
-        return $typebuyI->createtypebuy($typebuy, $id);
+            $typebuyCreate = new TypeBuyModel();
+            return $typebuyCreate->createtypebuy($typebuy);
+        }
     }
 
     public function update()
     {
-        $id = $_REQUEST['id'];
-        $body = json_decode(file_get_contents("php://input"));
+        if (isset($_REQUEST['id']) && preg_match('/^[a-z0-9]+$/', $_REQUEST['id'])) {
+            $id = $_REQUEST['id'];
+            $body = json_decode(file_get_contents("php://input"));
 
-        $typebuyU = new TypeBuyModel();
-        return $typebuyU->updatTypeBuy($body->tipo_compra, $id);
+            $typebuyUpdate = new TypeBuyModel();
+            return $typebuyUpdate->updatTypeBuy($body->tipo_compra, $id);
+        }
     }
 
     public function delete()
     {
-        $id = $_REQUEST['id'];
-        $typebuyE = new TypeBuyModel();
-        return $typebuyE->deletTypeBuy($id);
+        if (isset($_REQUEST['id']) && preg_match('/^[a-z0-9]+$/', $_REQUEST['id'])) {
+            $id = $_REQUEST['id'];
+            $typebuyDelete = new TypeBuyModel();
+            return $typebuyDelete->deletTypeBuy($id);
+        }
     }
 }

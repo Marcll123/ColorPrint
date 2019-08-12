@@ -33,13 +33,13 @@ class Sales extends Component {
         "Numero pedido"
       ],
       keys: [
-        "id_sucursal",
-        "id_tipocom",
-        "id_cliente",
+        "nombre_sucu",
+        "tipo_compro",
+        "cliente",
         "direccion",
         "dias_credito",
-        "id_tipoven",
-        "id_tipofac",
+        "tipo_venta",
+        "facturacion",
         "num_pedido"
       ],
       data: [],

@@ -13,7 +13,7 @@ class TypeBuyModel extends Connection
             $page = 1 + $num;
             $page = $page - 1;
             $p = $page * $rowpaper;
-            $query = 'SELECT * FROM id_tipocompra  limit ' . $p . ', ' . $rowpaper;
+            $query = 'SELECT id_tipocompra, tipo_compra FROM id_tipocompra limit ' . $p . ', ' . $rowpaper;
             $data =  $connection->query($query, PDO::FETCH_ASSOC)->fetchAll();
             return $data;
         } catch (Exception $e) {
@@ -30,7 +30,7 @@ class TypeBuyModel extends Connection
     {
         $connection = parent::connect();
         try {
-            $query = 'SELECT count(*) as num FROM id_tipocompra';
+            $query = 'SELECT count(id_tipocompra) as num FROM id_tipocompra';
             $data =  $connection->query($query, PDO::FETCH_ASSOC)->fetchAll();
             return $data;
         } catch (Exception $e) {

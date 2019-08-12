@@ -1,38 +1,51 @@
 <?php
-     require_once '../models/ActionsModel.php';
-     
-     class ActionsController{
-        public function show(){    
-            $actions = new ActionsModel();
+require_once '../models/ActionsModel.php';
+
+class ActionsController
+{
+    public function show()
+    {
+        $actions = new ActionsModel();
+        if (isset($_REQUEST['page']) && preg_match('/^[a-z0-9]+$/', $_REQUEST['page'])) {
             $page = $_REQUEST['page'];
-            return $user->consult($page-1);
+            return $actions->consult($page - 1);
         }
-        public function showNum(){    
-            $detail2 = new ActionsModel();
-            return $detail2->consultNum();
-        }
-        public function save(){      
+    }
+
+    public function showNum()
+    {
+        $actionsNum = new ActionsModel();
+        return $actionsNum->consultNum();
+    }
+
+    public function save()
+    {
+        if (isset($_POST['rol']) && isset($_POST['permit'])) {
             $role  = $_POST['rol'];
             $permits = $_POST['permit'];
-            $id = $_POST['ida'];
 
-            $userI = new ActionsModel();
-            return $actionsI->createUser($role , $permits, $id);
+            $actionsCreate = new ActionsModel();
+            return $actionsCreate->createActions($role, $permits);
         }
+    }
 
-        public function update(){
-            $id = $_REQUEST['ida'];
-            $body = json_decode(file_get_contents("php://input"));    
-         
-            $userU = new ActionsModel();
-            return $actionsU->updateActions($body->rol, $body->permit, $id);
+    public function update()
+    {
+        if (isset($_REQUEST['id']) && preg_match('/^[a-z0-9]+$/', $_REQUEST['id'])) {
+            $id = $_REQUEST['id'];
+            $body = json_decode(file_get_contents("php://input"));
+
+            $actionsUpdate = new ActionsModel();
+            return $actionsUpdate->updateActions($body->rol, $body->permit, $id);
         }
+    }
 
-        public function delete(){
-            $id = $_REQUEST['ida'];
-            $userE = new ActionsModel();
-            return $userE->deleteUser($id);
+    public function delete()
+    {
+        if (isset($_REQUEST['id']) && preg_match('/^[a-z0-9]+$/', $_REQUEST['id'])) {
+            $id = $_REQUEST['id'];
+            $actionsDelete = new ActionsModel();
+            return $actionsDelete->deleteActions($id);
         }
-     }
-
-?>
+    }
+}

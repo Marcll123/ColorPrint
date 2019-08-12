@@ -6,8 +6,10 @@ class UsersController
     public function show()
     {
         $user = new UserModel();
-        $page = $_REQUEST['page'];
-        return $user->consult($page - 1);
+        if (isset($_REQUEST['page']) && preg_match('/^[a-z0-9]+$/', $_REQUEST['page'])) {
+            $page = $_REQUEST['page'];
+            return $user->consult($page - 1);
+        }
     }
 
     public function showNum()

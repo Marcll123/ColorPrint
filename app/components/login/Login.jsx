@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Input from "../AnotherComponents/InputText.jsx";
 import { LoginService } from "../../services/LoginService.js";
-import {Redirect} from "react-router-dom";
+import { Redirect } from "react-router-dom";
 import "./Login.css";
 
 class Login extends Component {
@@ -19,35 +19,35 @@ class Login extends Component {
     this.login = this.login.bind(this);
     this.onChange = this.onChange.bind(this);
   }
- //Se encarga de verificar el estado de la clave y el ususario y cambiar el estado 
- //Para redireccionar a una nueva pantalla
+  //Se encarga de verificar el estado de la clave y el ususario y cambiar el estado 
+  //Para redireccionar a una nueva pantalla
   login(e) {
     e.preventDefault();
-   if(this.state.username && this.state.password){
-    this.loginService.sendData(this.state).then(res => { 
-        const {token} = res;
+    if (this.state.username && this.state.password) {
+      this.loginService.sendData(this.state).then(res => {
+        const { token } = res;
         localStorage.setItem('token', token);
-        this.setState({redirect:true});
-    });
-   }else{
-     console.log('Login error')
-   }
+        this.setState({ redirect: true });
+      });
+    } else {
+      console.log('Login error')
+    }
   }
-//Mtodo a la escucha de una accion de cambio para cambiar el estate
+  //Mtodo a la escucha de una accion de cambio para cambiar el estate
   onChange(e) {
-    this.setState({[e.target.name]: e.target.value});
+    this.setState({ [e.target.name]: e.target.value });
     console.log(this.state)
   }
 
   //Reder de el componente login que contiene sus vista y algunos state
   render() {
-    if(this.state.redirect){
+    if (this.state.redirect) {
       return (<Redirect to={'/start'}></Redirect>)
-    }else{
+    } else {
       console.log('Error')
     }
     return (
-      <div className="Login">
+      <div className="login">
         <div className="row">
           <div className="col-2" />
           <div className="col-8">
@@ -59,7 +59,7 @@ class Login extends Component {
                   </h4>
                   <form onSubmit={this.login}>
                     <Input
-                      type="email"
+                      type="text"
                       id="UserInput"
                       name="username"
                       placeholder="Usuario"
@@ -80,17 +80,17 @@ class Login extends Component {
                         ¿Olvidaste tu contraseña?
                       </a>
                     </p>
-                    <button 
-                      type="submit"
-                      value="Login"
-                      className="button btn btn-flat btn-primary"
-                    >Iniciar sesion</button>
+                    <div className="d-flex justify-content-center">
+                      <button
+                        type="submit"
+                        value="Login"
+                        className="button btn btn-flat btn-primary"
+                      >Iniciar sesion</button></div>
                   </form>
                 </div>
               </div>
             </div>
           </div>
-          <div className="col-2" />
         </div>
       </div>
     );
