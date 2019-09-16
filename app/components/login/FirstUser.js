@@ -124,7 +124,7 @@ class FirstUser extends Component {
                                             </button>
                                         </div>
                                         <div>
-                                        <ModalMessage title="Mensaje de usuario" body="Accion realizada con exito se a insertado un nuevo usuario" show={this.state.show}
+                                        <ModalMessage title="Mensaje de usuario" body="Accion realizada con exito se a insertado un nuevo usuario" show={this.state.show}></ModalMessage>
                                         </div>
                                     </form>
                                 </div>
