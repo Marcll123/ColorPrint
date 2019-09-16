@@ -3,7 +3,6 @@ require  '../../vendor/autoload.php';
 use \Firebase\JWT\JWT;
 
 class Auth{
-    
     private $key = "VmVnZ3kxMjMv";
     private $hour = 3600;
   

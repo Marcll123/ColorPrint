@@ -15,7 +15,11 @@ import { ChartTotal } from '../../services/Charts.js'
 export default class Chart extends Component {
     constructor(props) {
         super(props)
-
+        this.token = localStorage.getItem('token');
+        if (!this.token) {
+          location.pathname = '/'
+        }    
+        //Estado para las graficas 
         this.state = {
             exenta: 0,
             gravada: 0,
@@ -31,9 +35,12 @@ export default class Chart extends Component {
             fechaf: 1
         }
 
+        //bindeo de los eventos
         this.onEvent = this.onEvent.bind(this);
         this.handle = this.handle.bind(this);
 
+
+        //Intanciacion de las clases de los servicos
         this.ChartSales = new ChartSales();
         this.CharProductSales = new CharProductSales();
         this.CharProductPurchase = new CharProductPurchase();
@@ -42,44 +49,56 @@ export default class Chart extends Component {
     }
 
 
+    //Construccion del componente
     componentDidMount() {
         this.handle();
     }
 
     onEvent(e) {
         e.preventDefault()
+        //Datos de ventas tipo tasacero
         this.ChartSales.getData(this.state.fechaI, this.state.fechaf).then(res => {
             this.setState({ tasacero: res[0].num })
         })
 
+        //Datos de ventas tipo gravada
         this.ChartSales.getData2(this.state.fechaI, this.state.fechaf).then(res => {
             this.setState({ gravada: res[0].num })
         })
+
+        //Datos de ventas tipo exenta
         this.ChartSales.getData3(this.state.fechaI, this.state.fechaf).then(res => {
             this.setState({ exenta: res[0].num })
         })
+
+        //Datos de ventas tipo internacional
         this.ChartSales.getData4(this.state.fechaI, this.state.fechaf).then(res => {
             this.setState({ internacional: res[0].num })
         })
 
+        //Datos de ventas por productos
         this.CharProductSales.getData(this.state.fechaI, this.state.fechaf).then(res => {
             this.setState({ productNum: [...res] })
         })
 
+        //Datos de compras por productos
         this.CharProductPurchase.getData(this.state.fechaI, this.state.fechaf).then(res => {
             this.setState({ purchaseNum: [...res] })
         })
 
+        //Datos de compras por clientes
         this.ChartClient.getData2(this.state.fechaI, this.state.fechaf).then(res=> {     
             this.setState({ clientPnum: [...res] })
         })
 
+        //Datos de total ventas por productos
         this.ChartTotal.getData(this.state.fechaI, this.state.fechaf).then(res=> {     
             this.setState({ total: [...res] })
         })
     }
 
 
+    //Metodo para obtener nombres de los datos
     handle() {
         this.CharProductSales.getData2().then(res => {
             this.setState({ productName: [...res] })
@@ -91,6 +110,7 @@ export default class Chart extends Component {
     }
 
 
+    //Optencion de las fechas de los datos
     initDate(e) {
         this.setState({
             fechaI: e.target.value
@@ -103,7 +123,10 @@ export default class Chart extends Component {
         })
     }
 
+
     render() {
+
+        //Datos para la primera grafica ventas
         const data = {
             labels: ["Exenta", "Gravada", "Internacional", "tasa"],
             datasets: [{
@@ -118,19 +141,20 @@ export default class Chart extends Component {
             }]
         }
 
-
+        //mapeo del estado que contiene los nombres de los productos
         let name = this.state.productName.map(e => {
             return e.nombre
         })
-
+        //mapeo del estado que contiene los valores de los productos
         let num = this.state.productNum.map(e => {
             return e.num
         })
 
+         //Datos para la primera grafica ventas
         const data2 = {
             labels: name,
             datasets: [{
-                label: "Tipos de compras",
+                label: "Producto",
                 backgroundColor: [
                     'rgb(27, 99, 132)',
                     'rgb(27, 215, 132)',
@@ -141,6 +165,7 @@ export default class Chart extends Component {
             }]
         }
 
+        //Datos para la primera grafica compras
         let num2 = this.state.purchaseNum.map(e => {
             return e.num
         })
@@ -168,6 +193,7 @@ export default class Chart extends Component {
             return e.num
         })
 
+         //Datos para la primera grafica clientes
         const data4 = {
             labels: nameclient,
             datasets: [{
@@ -186,10 +212,11 @@ export default class Chart extends Component {
             return e.total
         })
 
+         //Datos para la primera grafica productos
         const data5 = {
             labels: name,
             datasets: [{
-                label: "Tipos de compras",
+                label: "",
                 backgroundColor: [
                     'rgb(27, 99, 132)',
                     'rgb(27, 215, 132)',
@@ -200,6 +227,7 @@ export default class Chart extends Component {
             }]
         }
 
+        
         return (
             <div className="d-flex principal" id="wrapper">
                 <Menu />
@@ -260,7 +288,7 @@ export default class Chart extends Component {
                                                         width={100}
                                                         height={50}
                                                     />
-                                                } title={`Productos mas comprados de la fecha: ${this.state.fechaI} a ${this.state.fechaf}`} col="col-lg-12" />
+                                                } title={`Productos mas comprados por los clientes de la fecha: ${this.state.fechaI} a ${this.state.fechaf}`} col="col-lg-12" />
                                             </React.Fragment>
                                         }
 
@@ -272,7 +300,7 @@ export default class Chart extends Component {
                                                         width={100}
                                                         height={50}
                                                     />
-                                                } title={`Productos mas comprados de la fecha: ${this.state.fechaI} a ${this.state.fechaf}`} col="col-lg-12" />
+                                                } title={`Total de dinero generado de la fecha: ${this.state.fechaI} a ${this.state.fechaf}`} col="col-lg-12" />
                                             </React.Fragment>
                                         }
                                     />

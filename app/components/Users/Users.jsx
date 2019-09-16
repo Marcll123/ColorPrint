@@ -11,15 +11,22 @@ import AcceptButton from "../AnotherComponents/buttons/AcceptButton.jsx";
 import Pagination from "react-js-pagination";
 import { UsersService } from "../../services/UsersService.js";
 import { NumberDetail } from "../../services/UsersService.js";
+import ModalMessage from "../AnotherComponents/ModalMessage.jsx";
 
 class Users extends Component {
   constructor(props) {
     super(props);
+    this.token = localStorage.getItem('token');
+    if (!this.token) {
+      location.pathname = '/'
+    }
+    console.log(this.token);    
     this.state = {
       titles: ["Nombre", "Apellidos", "Genero", "Usuario", "Correo", "Rol"],
       keys: ["nombre", "apellido", "genero", "nombre_usu", "correo", "roles"],
       data: [],
-      val: 1
+      val: 1,
+      show: ''
     };
     this.userService = new UsersService();
     this.NumberDetail = new NumberDetail();
@@ -52,6 +59,7 @@ class Users extends Component {
   }
 
   getdata(page) {
+    if(this.token){
     this.userService.getUsers(page).then(res => {
       this.setState(prev => {
         const { data } = prev;
@@ -59,6 +67,8 @@ class Users extends Component {
   
       });
     });
+  }
+
   }
 
   handleInit() {
@@ -81,6 +91,10 @@ class Users extends Component {
   handleAddTodo(form) {
     this.userService.saveUsers(form).then(res => {
       this.getdata(this.state.val);
+      const {message} = res;
+      if(message === "He insertado un registro"){
+          this.setState({show:'show'})
+      }
     });
   }
 
@@ -141,7 +155,9 @@ class Users extends Component {
                   <FormUsers
                     onAddTodo={this.handleAddTodo}
                     onUpdateTodo={this.handleUpdateTodo}
+                    message={ <ModalMessage title="Mensaje de usuario" body="Accion realizada con exito se a insertado un nuevo usuario" show={this.state.show}/>}
                   />
+                  
                 }
                 title="Usuarios"
               />
@@ -170,8 +186,8 @@ class Users extends Component {
                   <div className="card">
                     <div className="card-body">
                       <Search textButton="Agregar usuario"
-                       botontable={<a className="btn btn-outline-primary my-2 my-sm-2 my-2  ml-2 color-primary" href="http://localhost/storeveggy/src/pdf/PDF_users.php">PDF</a>} 
-                      modal="modal" target="#modal1" click={this.Add}/>
+                       botontable={<a className="btn btn-outline-primary my-2 my-sm-2 my-2  ml-2 color-primary" href="http://localhost/ColorPrint/app/reportes/reporteUsuarios.php" target="_blanck">PDF</a>} 
+                       modal="modal" target="#modal1" click={this.Add}/>
                       <Table
                         className="table table-responsive-sm table-responsive-md table-responsive-sm-xl
                         table-responsive-lg"

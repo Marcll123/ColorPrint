@@ -14,6 +14,10 @@ import { Number } from "../../services/TypeBuyService.js";
 class TypeBuy extends Component {
   constructor(props) {
     super(props);
+    this.token = localStorage.getItem('token');
+    if (!this.token) {
+      location.pathname = '/'
+    }
     this.state = {
       titles: [
         "Tipo compra"

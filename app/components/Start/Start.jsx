@@ -18,10 +18,13 @@ import { ChartUser } from '../../services/Charts.js'
 import { ChartProviderUser } from '../../services/Charts.js'
 import { ChartClients } from '../../services/Charts.js'
 import { Link } from "react-router-dom";
+import { Redirect } from "react-router-dom";
+
 
 class Start extends Component {
     constructor(props) {
         super(props);
+        //se almacenan los datos que se obtendran
         this.state = {
             val: 1,
             val2: 1,
@@ -32,11 +35,12 @@ class Start extends Component {
             nombresP: [],
             preciosP: [],
             nameTypeU: [],
-            numU:[],
+            numU: [],
             nameProvider: [],
-            numProvider:[],
+            numProvider: [],
             nameTClient: [],
-            numClient:[]
+            numClient: [],
+            redirect: false,
         }
         this.NumberDetail = new NumberDetail();
         this.NumberP = new Number();
@@ -53,11 +57,20 @@ class Start extends Component {
         this.handle = this.handle.bind(this);
         this.totalItemsCount = 0;
     }
+
+
     componentDidMount() {
         this.handle()
+        if (localStorage.getItem("token")) {
+            console.log('hola');
+        } else {
+            this.setState({ redirect: true })
+        }
     }
 
 
+
+    // obtendo los datos y se los asigno al estado
     handle() {
         this.NumberDetail.getNumberDetail().then(res => {
             this.setState({ val: res[0].num })
@@ -69,7 +82,7 @@ class Start extends Component {
         this.NumberS.getNumber().then(res => {
             this.setState({ val3: res[0].num })
         });
-        
+
         this.ChartPurchaseType.getData().then(res => {
             this.setState({ Exenta: res[0].data, Gravada: res[1].data, Internacional: res[2].data })
         })
@@ -110,8 +123,11 @@ class Start extends Component {
 
 
 
+    //Diseño de los graficos
     render() {
-
+        if (this.state.redirect) {
+            return (<Redirect to="/login" />)
+        }
 
         const data = {
             labels: ["Exenta", "Gravada", "Internacional"],
@@ -214,6 +230,7 @@ class Start extends Component {
         }
 
 
+        //Se miestra los graficos con sus datos
         return (
             <div className="d-flex principal" id="wrapper">
                 <Menu></Menu>
@@ -221,7 +238,6 @@ class Start extends Component {
                 <div id="page-content-wrapper" className="bg xd">
                     {/*Navbar principal*/}
                     <NavContent></NavContent>
-
                     <div className="size-completo">
                         <div className="container-fluid bg-content">
                             <div className="row content-card">
@@ -248,7 +264,7 @@ class Start extends Component {
                                         width={100}
                                         height={50}
                                     />
-                                } title="Venta de proveedores" col="col-lg-6" />
+                                } title="Numero de usuarios por su rol" col="col-lg-6" />
                                 <CardChart chart={
                                     <Line data={dataProvider}
                                         width={100}

@@ -10,7 +10,7 @@ class ClientModel extends Connection
     {
         $connection = parent::connect();
         try {
-            $rowpaper = 10;
+            $rowpaper = 5;
             $page = 1 + $num;
             $page = $page - 1;
             $p = $page * $rowpaper;

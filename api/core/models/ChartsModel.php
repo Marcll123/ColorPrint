@@ -1,15 +1,16 @@
 <?php
 require_once '../helpers/connection.php';
 
-class ChartsModel extends Connection {
-    
+class ChartsModel extends Connection
+{
+
     public function consultPurchaseType()
     {
         $connection = parent::connect();
         try {
             $query = 'SELECT COUNT(id_compra) as data FROM compra WHERE id_tipocompra = 2 UNION
             SELECT COUNT(id_compra)  FROM compra WHERE id_tipocompra = 1 UNION 
-            SELECT COUNT(id_compra)  FROM compra WHERE id_tipocompra = 8';
+            SELECT COUNT(id_compra)  FROM compra WHERE id_tipocompra = 8 ';
             $data =  $connection->query($query, PDO::FETCH_ASSOC)->fetchAll();
             return $data;
         } catch (Exception $e) {
@@ -281,7 +282,7 @@ class ChartsModel extends Connection {
         }
     }
 
-    
+
     public function consultProviderName()
     {
         $connection = parent::connect();
@@ -317,7 +318,7 @@ class ChartsModel extends Connection {
         }
     }
 
-    
+
     public function consultClientTypeName()
     {
         $connection = parent::connect();
@@ -334,8 +335,4 @@ class ChartsModel extends Connection {
             return json_encode($array);
         }
     }
-    
-
-    
 }
-?>

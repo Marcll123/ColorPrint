@@ -1,24 +1,28 @@
 <?php
 require_once '../models/ChartsModel.php';
-
+//clase del controlador para los graficos
 class ChartsController
 {
+    //obtencion de los datos de tipo de compra
     public function purchaseTypeChart()
     {
         $chart = new ChartsModel();
         return $chart->consultPurchaseType();
     }
+    //obtencion de los datos para precion del producto
     public function productPriceChart()
     {
         $chart = new ChartsModel();
         return $chart->consultProductPrice();
     }
+    //obtencion de los datos para nombre del producto
     public function productNameChart()
     {
         $chart = new ChartsModel();
         return $chart->consultProductName();
     }
 
+    // metodo para obtencion de datos y validacion de parametros
     public function SalesParameter()
     {
         $chart = new ChartsModel();
@@ -29,6 +33,7 @@ class ChartsController
         }
     }
 
+    // metodo para obtencion de datos y validacion de parametros
     public function SalesParameter2()
     {
         $chart = new ChartsModel();
@@ -39,6 +44,7 @@ class ChartsController
         }
     }
 
+    // metodo para obtencion de datos y validacion de parametros
     public function SalesParameter3()
     {
         $chart = new ChartsModel();
@@ -49,6 +55,7 @@ class ChartsController
         }
     }
 
+    // metodo para obtencion de datos y validacion de parametros
     public function SalesParameter4()
     {
         $chart = new ChartsModel();
@@ -59,6 +66,7 @@ class ChartsController
         }
     }
 
+    // metodo para obtencion de datos y validacion de parametros
     public function SalesProducto()
     {
         $chart = new ChartsModel();
@@ -75,6 +83,7 @@ class ChartsController
         return $chart->consultproductnameSale();
     }
 
+    // metodo para obtencion de datos y validacion de parametros
     public function PurchaseProduct()
     {
         $chart = new ChartsModel();
@@ -101,6 +110,7 @@ class ChartsController
         return $chart->consultClientName();
     }
 
+    // metodo para obtencion de datos y validacion de parametros
     public function PriceProductTotal()
     {
         $chart = new ChartsModel();
@@ -112,37 +122,42 @@ class ChartsController
     }
 
 
+    //obtencion de los datos para Numero de usuario
     public function UserNum()
     {
         $chart = new ChartsModel();
         return $chart->consultnumUsers();
     }
 
+    //obtencion de los datos para tipo de usuario
     public function UsersName()
     {
         $chart = new ChartsModel();
         return $chart->consultTypeUsers();
     }
 
+    //obtencion de los datos para proveedor
     public function ProviderNum()
     {
         $chart = new ChartsModel();
         return $chart->consultProviderNum();
     }
 
+    //obtencion de los datos para nombre del proveedor
     public function ProviderName()
     {
         $chart = new ChartsModel();
         return $chart->consultProviderName();
     }
 
-    
+    //obtencion de los datos para cliente
     public function ClientNum()
     {
         $chart = new ChartsModel();
         return $chart->consultClientNum();
     }
 
+    //obtencion de los datos para tipo de cliente
     public function ClientName()
     {
         $chart = new ChartsModel();

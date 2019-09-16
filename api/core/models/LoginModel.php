@@ -2,31 +2,31 @@
 
 require_once '../helpers/connection.php';
 require_once '../helpers/Auth.php';
+
 class LoginModel extends Connection
 {
 
-    public function loginUser($username)
+    public function loginUser($username, $pass)
     {
         $conexion = parent::connect();
         try {
 
-            $sql = $conexion->prepare('SELECT nombre_usu FROM usuarios WHERE nombre_usu = ?');
+            $sql = $conexion->prepare('SELECT * FROM usuarios WHERE nombre_usu = ?');
             $sql->execute(array($username));
             $res = $sql->fetchAll();
-            foreach ($res as $row) {
-                if ($username === $row['nombre_usu']) {
-                    $auth = new Auth();
-                    $token = $auth->generateToken(20);
-                    $array = [
-                        'token' => $token,
-                        'username' => $username,
-                        'permission' => [1, 2, 3]
+            $row = $res[0];
 
-                    ];
-                    return json_encode($array);
-                } else {
-                    throw new Exception('El usuario no existe');
-                }
+            if (password_verify($pass, $row['clave'])) {
+                $auth = new Auth();
+                $token = $auth->generateToken($row['id_usuario']);
+                $array = [
+                    'token' => $token,
+                    'username' => $username,
+                    'rol' => $row['id_rol'],
+                ];
+                return json_encode($array);
+            } else {
+                throw new Exception("Usuario o contraseña incorrecta");
             }
         } catch (Exception $e) {
             $array = [

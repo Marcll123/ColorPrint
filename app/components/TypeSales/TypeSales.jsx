@@ -16,6 +16,11 @@ class TypeSales  extends Component {
     //Constructor de el componente Type sales
     constructor(props) {
       super(props);
+      this.token = localStorage.getItem('token');
+      if (!this.token) {
+        location.pathname = '/'
+      }
+  
       //Estate de el componente TypeSales que contiene titles de la tabla y sus keys para obtener 
       //los datos y mostrarlos en la vista
       this.state = {

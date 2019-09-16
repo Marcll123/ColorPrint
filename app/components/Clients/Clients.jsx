@@ -16,6 +16,10 @@ class Clients extends Component {
   //Constructor de el componente Clients
   constructor(props) {
     super(props);
+    this.token = localStorage.getItem('token');
+    if (!this.token) {
+      location.pathname = '/'
+    } 
     //Estate de el componente Clients que contiene titles de la tabla y sus keys para obtener
     //los datos y mostrarlos en la vista
     this.state = {
@@ -39,7 +43,7 @@ class Clients extends Component {
         "correo",
         "saldo_acumu",
         "codigo_vendedor",
-        "id_tipocli"
+        "tipo_cliete"
       ],
       data: [],
       val: 1
@@ -202,6 +206,7 @@ class Clients extends Component {
                       <Search
                         textButton="Agregar cliente"
                         modal="modal"
+                        botontable={<a className="btn btn-outline-primary my-2 my-sm-2 my-2  ml-2 color-primary" href="http://localhost/ColorPrint/app/reportes/repoclin.php" target="_blanck">PDF</a>} 
                         target="#modal1"
                         click={this.Add}
                       />

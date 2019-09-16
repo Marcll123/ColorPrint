@@ -11,7 +11,7 @@ import {
 
 export class ProductService {
     constructor() {
-        this.url = `${API}/ProductService.php`;
+        this.url = `${API}/Product.php`;
     }
 
     async getProduct(page) {

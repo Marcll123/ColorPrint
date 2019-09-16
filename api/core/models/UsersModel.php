@@ -24,6 +24,23 @@ class UserModel extends Connection
         }
     }
 
+    public function consultOneUser($user)
+    {
+        $connection = parent::connect();
+        try {
+            $query = "SELECT id_usuario, nombre, apellido, genero, nombre_usu , correo, clave, roles.roles FROM usuarios INNER JOIN roles ON usuarios.id_rol = roles.id_rol WHERE nombre_usu = '$user'";
+            $data =  $connection->query($query, PDO::FETCH_ASSOC)->fetchAll();
+            return $data;
+        } catch (Exception $e) {
+            $array = [
+                'message' => 'Error al ingresar un registro',
+                'type' => 'error',
+                'specificMessage' => $e->getMessage()
+            ];
+            return json_encode($array);
+        }
+    }
+
     public function consultNum()
     {
         $connection = parent::connect();
@@ -43,10 +60,12 @@ class UserModel extends Connection
 
     public function createUser($name, $last_name, $gender, $user, $email, $password, $id_rol)
     {
+        
         $conexion = parent::connect();
         try {
-            $query = 'INSERT INTO usuarios(nombre, apellido, genero, nombre_usu , correo, clave, id_rol) VALUES (?,?,?,?,?,?,?)';
-            $conexion->prepare($query)->execute(array($name, $last_name, $gender, $user, $email, $password, $id_rol));
+            $query = 'INSERT INTO usuarios(nombre, apellido, genero, nombre_usu , correo, clave, id_rol) VALUES (:non, :ape, :gen ,:usu , :core,:con, :rol)';
+            $cifrado = password_hash($password, PASSWORD_BCRYPT);
+            $conexion->prepare($query)->execute(array(':non'=>$name, ':ape'=>$last_name, ':gen'=>$gender, ':usu'=>$user, ':core'=>$email, ":con"=>$cifrado, ':rol'=>$id_rol));
             $array = [
                 'message' => 'He insertado un registro',
                 'type' => 'success',
@@ -68,7 +87,31 @@ class UserModel extends Connection
         $conexion = parent::connect();
         try {
             $query = 'UPDATE usuarios SET nombre=?, apellido=?, genero=?, nombre_usu=?, correo=?, clave=?, id_rol=? WHERE id_usuario=?';
-            $conexion->prepare($query)->execute(array($name, $last_name, $gender, $user, $email, $password, $id_rol, $id));
+            $cifrado = password_hash($password, PASSWORD_BCRYPT);
+            $conexion->prepare($query)->execute(array($name, $last_name, $gender, $user, $email, $cifrado, $id_rol, $id));
+            $array = [
+                'message' => 'He actualizado un registro',
+                'type' => 'success',
+                'specificMessage' => $conexion
+            ];
+            return json_encode($array);
+        } catch (Exception $e) {
+            $array = [
+                'message' => 'Error al actualizar un registro',
+                'type' => 'error',
+                'specificMessage' => $e->getMessage()
+            ];
+            return json_encode($array);
+        }
+    }
+
+    public function updateUserProfile($name, $last_name, $gender, $user, $email, $password, $id_rol, $name_usu)
+    {
+        $conexion = parent::connect();
+        try {
+            $query = 'UPDATE usuarios SET nombre=?, apellido=?, genero=?, nombre_usu=?, correo=?, clave=?, id_rol=? WHERE nombre_usu=?';
+            $cifrado = password_hash($password, PASSWORD_BCRYPT);
+            $conexion->prepare($query)->execute(array($name, $last_name, $gender, $user, $email, $cifrado, $id_rol, $name_usu));
             $array = [
                 'message' => 'He actualizado un registro',
                 'type' => 'success',

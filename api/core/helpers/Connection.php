@@ -22,4 +22,6 @@ class Connection{
             }
         }
     }
+    $mysqli = new mysqli("localhost", "Marcos" ,"123", "colorprint");
 ?>
+

@@ -4,6 +4,25 @@ import logo from "../../resources/img/logo2.PNG";
 import { NavLink } from "react-router-dom";
 
 class Menu extends Component {
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      visible: true
+    };
+
+    this.rol = localStorage.getItem('rol');
+  };
+
+
+  componentDidMount(){
+    if (this.rol === '1') {
+      this.setState({ visible: true })
+    } else if (this.rol === '2' ){
+      this.setState({ visible: false })
+    }
+  }
+
   render() {
     //Metodo render de React en este caso me retorna lo que es el menu de la aplicacion
     return (
@@ -39,11 +58,20 @@ class Menu extends Component {
               {/*lINK Y TO ES UNA PROP DE REACT ROUTER DOM QUE SIRVE PARA EL MANEJO DE RUTAS Y LA NEGAVE
                       CION EN LA SPA */}
               <NavLink
+                to="/perfil"
+                activeClassName="activo"
+                className="list-group-item list-group-item-action bg-white hover"
+              >
+                <i className="fas fa-address-card iconli2 text-info" />
+                Perfil
+              </NavLink>
+
+              <NavLink
                 to="/adminuser"
                 activeClassName="activo"
                 className="list-group-item list-group-item-action bg-white hover"
               >
-                <i className="fas fa-user iconli2 text-info" />
+                <i className="fas fa-user iconli2 text-warning" />
                 Administrar usuarios
               </NavLink>
               {/*lINK Y TO ES UNA PROP DE REACT ROUTER DOM QUE SIRVE PARA EL MANEJO DE RUTAS Y LA NEGAVE
@@ -53,8 +81,8 @@ class Menu extends Component {
                 activeClassName="activo"
                 className="list-group-item list-group-item-action bg-white hover"
               >
-              
-                <i className="fas fa-user-tag iconli text-warning" />{" "}
+
+                <i className="fas fa-user-tag iconli text-primary" />{" "}
                 Administrar clientes
               </NavLink>
             </div>
@@ -79,7 +107,18 @@ class Menu extends Component {
                 <i className="fas fa-shopping-bag iconli2 text-info" />
                 Gestion compras
               </NavLink>
+
+              <NavLink
+                to="/productos"
+                activeClassName="activo"
+                className="list-group-item list-group-item-action bg-white hover"
+              >
+                <i className="fas fa-archive iconli2 text-warning" />
+                Productos
+              </NavLink>
             </div>
+
+
 
             {/*Moduolo de Ventas*/}
             <a
@@ -135,36 +174,42 @@ class Menu extends Component {
             </div>
 
             {/*Modulo de Administracion*/}
-            <a
-              href="#administration"
-              data-toggle="collapse"
-              className="list-group-item list-group-item-action bg-white hover"
-            >
-              Administracion
+            {
+              this.state.visible ?
+                <React.Fragment>
+                  <a
+                    href="#administration"
+                    data-toggle="collapse"
+                    className="list-group-item list-group-item-action bg-white hover"
+                  >
+                    Administracion
               <i className="fas fa-angle-down iconMove6 text-primary" />
-            </a>
-            <div id="administration" className="collapse">
-              {/*lINK Y TO ES UNA PROP DE REACT ROUTER DOM QUE SIRVE PARA EL MANEJO DE RUTAS Y LA NEGAVE
+                  </a>
+                  <div id="administration" className="collapse">
+                    {/*lINK Y TO ES UNA PROP DE REACT ROUTER DOM QUE SIRVE PARA EL MANEJO DE RUTAS Y LA NEGAVE
                       CION EN LA SPA */}
-              <NavLink
-                to="/tipoventas"
-                activeClassName="activo"
-                className="list-group-item list-group-item-action bg-white hover"
-              >
-                <i className="fas fa-money-check-alt iconli2 text-primary" />
-                Tipo ventas
+                    <NavLink
+                      to="/tipoventas"
+                      activeClassName="activo"
+                      className="list-group-item list-group-item-action bg-white hover"
+                    >
+                      <i className="fas fa-money-check-alt iconli2 text-primary" />
+                      Tipo ventas
               </NavLink>
-              {/*lINK Y TO ES UNA PROP DE REACT ROUTER DOM QUE SIRVE PARA EL MANEJO DE RUTAS Y LA NEGAVE
+                    {/*lINK Y TO ES UNA PROP DE REACT ROUTER DOM QUE SIRVE PARA EL MANEJO DE RUTAS Y LA NEGAVE
                       CION EN LA SPA */}
-              <NavLink
-                to="/tipocompras"
-                activeClassName="activo"
-                className="list-group-item list-group-item-action bg-white hover"
-              >
-                <i className="fas fa-shopping-cart iconli2 text-primary" />
-                Tipo compras
+                    <NavLink
+                      to="/tipocompras"
+                      activeClassName="activo"
+                      className="list-group-item list-group-item-action bg-white hover"
+                    >
+                      <i className="fas fa-shopping-cart iconli2 text-primary" />
+                      Tipo compras
               </NavLink>
-            </div>
+                  </div>
+                </React.Fragment>
+                : <div></div>
+            }
           </div>
         </div>
       </div>

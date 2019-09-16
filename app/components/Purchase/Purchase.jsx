@@ -294,6 +294,7 @@ class Purchase extends Component {
                             click={this.Add}
                           />
                         }
+                        botontable2={<a className="btn btn-outline-primary my-2 my-sm-2 my-2  ml-2 color-primary" href="http://localhost/ColorPrint/app/reportes/reporteCompra.php" target="_blanck">PDF</a>}
                       />
                       <Table
                         id="dtHorizontalExample"

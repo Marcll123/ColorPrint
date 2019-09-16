@@ -1,12 +1,12 @@
 <?php
 
 require_once '../controllers/UsersController.php';
-header('Access-Control-Allow-Origin: http://localhost:8080');
+require_once '../helpers/Auth.php';
+header('Access-Control-Allow-Origin: *');
 header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept, token");
 header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE');
 header('Content-Type: application/json');
 
-$headers = apache_request_headers();
 
 $newUser = new UsersController();
 switch ($_SERVER['REQUEST_METHOD']) {
