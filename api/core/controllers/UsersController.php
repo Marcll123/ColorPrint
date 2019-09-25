@@ -21,6 +21,23 @@ class UsersController
         }
     }
 
+    public function search()
+    {
+        $user = new UserModel();
+        if (isset($_REQUEST['user']) && preg_match('/^[a-z0-9]+$/', $_REQUEST['user'])) {
+            $search = $_REQUEST['user'];
+            return $user->searchUser($search);
+        }
+    }
+    public function showoneid()
+    {
+        $user = new UserModel();
+        if (isset($_REQUEST['id']) && preg_match('/^[a-z0-9]+$/', $_REQUEST['id'])) {
+            $id = $_REQUEST['id'];
+            return $user->consultOneUserId($id);
+        }
+    }
+
     public function showNum()
     {
         $detail2 = new UserModel();
@@ -52,25 +69,17 @@ class UsersController
         $id = $_REQUEST['id'];
         $body = json_decode(file_get_contents("php://input"));
 
-        $val = new Validator();
-        $error_encontrado = "";
-        if ($val->validar_clave($body->clave, $error_encontrado)) {
-            if ($body->cofimarclave === $body->clave) {
-                if ($body->nombre_usu !== $body->clave) {
-                    $userU = new UserModel();
-                    return $userU->updateUser(
-                        $body->nombre,
-                        $body->apellido,
-                        $body->genero,
-                        $body->nombre_usu,
-                        $body->correo,
-                        $body->clave,
-                        $body->id_rol,
-                        $id
-                    );
-                }
-            }
-        }
+
+        $userU = new UserModel();
+        return $userU->updateUser(
+            $body->nombre,
+            $body->apellido,
+            $body->genero,
+            $body->nombre_usu,
+            $body->correo,
+            $body->id_rol,
+            $id
+        );
     }
 
     public function updateProfile()

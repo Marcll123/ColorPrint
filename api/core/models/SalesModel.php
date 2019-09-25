@@ -31,6 +31,28 @@ class SalesModel extends Connection
         }
     }
 
+
+    public function consultAllSales($num)
+    {
+        $connection = parent::connect();
+        try {      
+            $rowpaper = 5;
+            $page = 1+$num;
+            $page = $page-1;
+            $p = $page*$rowpaper;
+            $query = 'SELECT ventas.cliente, ventas.municipio, ventas.departamento, ventas.direccion, ventas.numero_registro, detallefactura.total FROM ventas INNER JOIN detallefactura ON detallefactura.id_venta = ventas.id_venta limit '.$p.', '.$rowpaper;
+            $data=  $connection->query($query,PDO::FETCH_ASSOC)->fetchAll();
+          return $data;
+        } catch (Exception $e) {
+            $array = [
+                'message' => 'Error al ingresar un registro',
+                'type' => 'error',
+                'specificMessage' => $e->getMessage()
+            ];
+            return json_encode($array);
+        }
+    }
+
     //Función para obtener el número de datos
     public function consultNum()
     {
@@ -49,15 +71,83 @@ class SalesModel extends Connection
         }
     }
 
+    public function consultSuma($id)
+    {
+        $connection = parent::connect();
+        try {
+            $query = 'SELECT SUM(subtotal) as sub FROM detalleventa WHERE id_venta ='.$id;
+            $data =  $connection->query($query, PDO::FETCH_ASSOC)->fetchAll();
+            return $data;
+        } catch (Exception $e) {
+            $array = [
+                'message' => 'Error al obtener registros',
+                'type' => 'error',
+                'specificMessage' => $e->getMessage()
+            ];
+            return json_encode($array);
+        }
+    }
+
+    public function consultLatId()
+    {
+        $connection = parent::connect();
+        try {
+            $query = 'SELECT id_venta FROM ventas ORDER BY id_venta DESC LIMIT 1';
+            $data =  $connection->query($query, PDO::FETCH_ASSOC)->fetchAll();
+            return $data;
+        } catch (Exception $e) {
+            $array = [
+                'message' => 'Error al obtener registros',
+                'type' => 'error',
+                'specificMessage' => $e->getMessage()
+            ];
+            return json_encode($array);
+        }
+    }
+
+    public function consultDataClient($id)
+    {
+        $connection = parent::connect();
+        try {
+            $query = 'SELECT id_cliente , cliente, numero_registro,  municipio.municipio, departamento.departamento, direccion FROM cliente INNER JOIN municipio ON municipio.id_muni = cliente.id_muni INNER JOIN departamento ON departamento.id_dep = cliente.id_departamento WHERE id_cliente ='.$id;
+            $data =  $connection->query($query, PDO::FETCH_ASSOC)->fetchAll();
+            return $data;
+        } catch (Exception $e) {
+            $array = [
+                'message' => 'Error al obtener registros',
+                'type' => 'error',
+                'specificMessage' => $e->getMessage()
+            ];
+            return json_encode($array);
+        }
+    }
+    public function consultDataClients()
+    {
+        $connection = parent::connect();
+        try {
+            $query = 'SELECT id_cliente , cliente, numero_registro,  municipio.municipio, departamento.departamento, direccion FROM cliente INNER JOIN municipio ON municipio.id_muni = cliente.id_muni INNER JOIN departamento ON departamento.id_dep = cliente.id_departamento';
+            $data =  $connection->query($query, PDO::FETCH_ASSOC)->fetchAll();
+            return $data;
+        } catch (Exception $e) {
+            $array = [
+                'message' => 'Error al obtener registros',
+                'type' => 'error',
+                'specificMessage' => $e->getMessage()
+            ];
+            return json_encode($array);
+        }
+    }
+
     //Función para realizar la acción de crear un nuevo dato
-    public function createSale($id_sucursal, $tipo_com, $id_cliente, $direccion, $forma, $dias_credito, $punto_venta, $contacto, $tipo_venta, $tipo_fac, $id_usuario, $nota_remision, $num_pedido, $bodega)
+    public function createSale($cliente, $comprobate, $municipio, $departamento, $dirreccion, $numero_registro, $formapago, $tipoventa)
     {
         $conexion = parent::connect();
         try {
-            $query = 'INSERT INTO ventas(id_sucursal, id_tipocom,id_cliente, direccion, id_forma, dias_credito, punto_venta, contacto,id_tipoven,id_tipofac,id_usuario,nota_remision,num_pedido,bodega) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)';
+            date_default_timezone_set('America/El_Salvador');
+            $date = date("Y-m-d");
+            $query = 'INSERT INTO ventas(cliente, id_tipocom, municipio, departamento, direccion, numero_registro, id_forma, id_tipoven, fecha_realizacion) VALUES (?,?,?,?,?,?,?,?,?)';
             $conexion->prepare($query)->execute(array(
-                $id_sucursal, $tipo_com, $id_cliente, $direccion, $forma, $dias_credito, $punto_venta, $contacto, $tipo_venta,
-                $tipo_fac, $id_usuario, $nota_remision, $num_pedido, $bodega
+                $cliente, $comprobate, $municipio, $departamento, $dirreccion, $numero_registro, $formapago, $tipoventa, $date
             ));
             $array = [
                 'message' => 'He insertado un registro',
@@ -74,6 +164,32 @@ class SalesModel extends Connection
             return json_encode($array);
         }
     }
+
+    public function createDetailF($descuento, $iva, $cesc, $retencion, $total, $venta)
+    {
+        $conexion = parent::connect();
+        try {
+            $query = 'INSERT INTO detallefactura(descuento, iva, cesc, retencion, total, id_venta) VALUES (?,?,?,?,?,?)';
+            $conexion->prepare($query)->execute(array(
+                $descuento, $iva, $cesc, $retencion, $total, $venta
+            ));
+            $array = [
+                'message' => 'He insertado un registro',
+                'type' => 'success',
+                'specificMessage' => $conexion
+            ];
+            return json_encode($array);
+        } catch (Exception $e) {
+            $array = [
+                'message' => 'Error al ingresar un registro',
+                'type' => 'error',
+                'specificMessage' => $e->getMessage()
+            ];
+            return json_encode($array);
+        }
+    }
+
+    
 
     //Función para actualizar los datos
     public function updateSale(

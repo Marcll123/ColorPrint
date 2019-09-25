@@ -14,6 +14,8 @@ export class UsersService {
         this.url = `${API}/Users.php`;
         this.url2 = `${API}/Profile.php`;
         this.url3 = `${API}/Recover.php`;
+        this.url4 = `${API}/Userdata.php`;
+        this.url5 = `${API}/SearchUser.php`;
     }
 
     async getUsers(page) {
@@ -36,6 +38,24 @@ export class UsersService {
 
     async getUsersProfile(data) {
         const response = await new HttpService(`${this.url2}?user=${data}`, GET).execute();
+        if (response.hasOwnProperty('res')) {
+            return response.res;
+        } else {
+            return response;
+        }
+    }
+
+    async getUserSearch(data) {
+        const response = await new HttpService(`${this.url5}?user=${data}`, GET).execute();
+        if (response.hasOwnProperty('res')) {
+            return response.res;
+        } else {
+            return response;
+        }
+    }
+
+    async getUsersdataid(id) {
+        const response = await new HttpService(`${this.url4}?id=${id}`, GET).execute();
         if (response.hasOwnProperty('res')) {
             return response.res;
         } else {

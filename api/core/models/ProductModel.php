@@ -46,6 +46,40 @@ class ProductModel extends Connection
         }
     }
 
+    public function consultProducts()
+    {
+        $connection = parent::connect();
+        try {
+            $query = 'SELECT id_producto, nombre_produc, precio_uni, descripcion FROM produto';
+            $data =  $connection->query($query, PDO::FETCH_ASSOC)->fetchAll();
+            return $data;
+        } catch (Exception $e) {
+            $array = [
+                'message' => 'Error al obtener registros',
+                'type' => 'error',
+                'specificMessage' => $e->getMessage()
+            ];
+            return json_encode($array);
+        }
+    }
+
+    public function consultOneProducts($id)
+    {
+        $connection = parent::connect();
+        try {
+            $query = 'SELECT id_producto, nombre_produc, precio_uni, descripcion FROM produto WHERE id_producto ='.$id;
+            $data =  $connection->query($query, PDO::FETCH_ASSOC)->fetchAll();
+            return $data;
+        } catch (Exception $e) {
+            $array = [
+                'message' => 'Error al obtener registros',
+                'type' => 'error',
+                'specificMessage' => $e->getMessage()
+            ];
+            return json_encode($array);
+        }
+    }
+
     //Función para realizar la acción de crear un nuevo dato
     public function createProduct($name, $price, $description, $name_provider)
     {

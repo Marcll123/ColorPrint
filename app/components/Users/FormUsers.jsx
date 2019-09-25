@@ -45,8 +45,9 @@ class FormUsers extends Component {
                     type="text"
                     id="UserName"
                     name="nombre"
-                    onChange={this.handleImput}
+                    onChange={this.props.changename}
                     auto="off"
+                    values={this.props.default}
                   />
                   <Input
                     for="UserLastname"
@@ -54,8 +55,9 @@ class FormUsers extends Component {
                     type="text"
                     id="UserLastname"
                     name="apellido"
-                    onChange={this.handleImput}
                     auto="off"
+                    onChange={this.props.changelastname}
+                    values={this.props.valuelastname}
                   />
                   <ControlForm
                     id="gender"
@@ -73,7 +75,8 @@ class FormUsers extends Component {
                     type="text"
                     id="Usuario"
                     name="nombre_usu"
-                    onChange={this.handleImput}
+                    onChange={this.props.changeuser}
+                    values={this.props.valueuser}
                     auto="off"
                   />
                 </div>
@@ -84,31 +87,37 @@ class FormUsers extends Component {
                     type="email"
                     id="mail"
                     name="correo"
-                    onChange={this.handleImput}
+                    onChange={this.props.changemail}
+                    values={this.props.valuemail}
                     auto="off"
                     pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
                     title="El correo debe de seguir la siguiente estructura [text]@[dominio].[extension]"
                   />
-                  <Input
-                    for="pass"
-                    text="Contraseña:"
-                    type="password"
-                    id="pass"
-                    name="clave"
-                    onChange={this.handleImput}
-                    auto="off"
-                    pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
-                    title="La contraseña debe de tener 8 o mas caracteres y por lo menos una letra mayuscula y otra minuscula y caracter especial"
-                  />
-                  <Input
-                    for="passconfim"
-                    text="Confirmar contraseña:"
-                    type="password"
-                    id="passconfirm"
-                    name="cofimarclave"
-                    onChange={this.handleImput}
-                    auto="off"
-                  />
+                  {
+                    this.props.visible === true ?
+                      <Input
+                        for="pass"
+                        text="Contraseña:"
+                        type="password"
+                        id="pass"
+                        name="clave"
+                        onChange={this.handleImput}
+                        pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+                        title="La contraseña debe de tener 8 o mas caracteres y por lo menos una letra mayuscula y otra minuscula y caracter especial"
+                      /> : <div></div>
+                  }
+
+                  {
+                    this.props.visible === true ?
+                      <Input
+                        for="passconfim"
+                        text="Confirmar contraseña:"
+                        type="password"
+                        id="passconfirm"
+                        name="cofimarclave"
+                        onChange={this.handleImput}
+                      /> : <div></div>
+                  }
                   <ControlForm
                     id="rol"
                     name="id_rol"
@@ -121,15 +130,12 @@ class FormUsers extends Component {
                   />
                 </div>
                 <div className="mx-auto split">
-                  <button type="submit" className="btn btn-info mr-1">
+                  <button type="submit" className="btn btn-info mr-1" data-toggle="modal" data-target={this.props.targetm}>
                     Realizar
                   </button>
                   <button type="button" className="btn btn-danger" data-dismiss="modal">
                     Cancelar
                   </button>
-                </div>
-                <div>
-                    {this.props.message}
                 </div>
               </div>
             </div>

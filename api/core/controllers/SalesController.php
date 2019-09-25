@@ -10,52 +10,98 @@ class SalesController
             return $sales->consult($page - 1);
         }
     }
+
+    public function showAllSales()
+    {
+        $sales = new SalesModel();
+        if (isset($_REQUEST['page']) && preg_match('/^[a-z0-9]+$/', $_REQUEST['page'])) {
+            $page = $_REQUEST['page'];
+            return $sales->consultAllSales($page - 1);
+        }
+    }
+
+    
+    public function showdata()
+    {
+        $sales = new SalesModel();
+        if (isset($_REQUEST['id']) && preg_match('/^[a-z0-9]+$/', $_REQUEST['id'])) {
+            $id= $_REQUEST['id'];
+            return $sales->consultDataClient($id);
+        }
+    }
+
+      
+    public function showSuma()
+    {
+        $sales = new SalesModel();
+        if (isset($_REQUEST['id']) && preg_match('/^[a-z0-9]+$/', $_REQUEST['id'])) {
+            $id= $_REQUEST['id'];
+            return $sales->consultSuma($id);
+        }
+    }
+    public function showAllData()
+    {
+        $sales = new SalesModel();
+        return $sales->consultDataClients();
+    }
+
     public function showNum()
     {
         $salesNum = new SalesModel();
         return $salesNum->consultNum();
     }
+
+    
+    public function showID()
+    {
+        $salesNum = new SalesModel();
+        return $salesNum->consultLatId();
+    }
+    
     public function save()
     {
-        if (
-            isset($_POST['id_sucursal']) && isset($_POST['id_tipocom']) && isset($_POST['id_cliente']) && isset($_POST['direccion'])
-            && isset($_POST['id_forma']) && isset($_POST['dias_credito']) && isset($_POST['punto_venta']) && isset($_POST['contacto'])
-            && isset($_POST['id_tipoven']) && isset($_POST['id_tipofac']) && isset($_POST['id_usuario']) && isset($_POST['nota_remision'])
-            && isset($_POST['num_pedido']) && isset($_POST['bodega'])
-        ) {
-            $id_sucursal  = $_POST['id_sucursal'];
-            $id_tipocom = $_POST['id_tipocom'];
-            $id_cliente = $_POST['id_cliente'];
-            $direccion = $_POST['direccion'];
-            $id_forma = $_POST['id_forma'];
-            $dias_credito = $_POST['dias_credito'];
-            $punto_venta = $_POST['punto_venta'];
-            $contacto = $_POST['contacto'];
-            $id_tipoven = $_POST['id_tipoven'];
-            $id_tipofac = $_POST['id_tipofac'];
-            $id_usuario = $_POST['id_usuario'];
-            $nota_remision = $_POST['nota_remision'];
-            $num_pedido = $_POST['num_pedido'];
-            $bodega = $_POST['bodega'];
+            $cliente = $_POST['cliente'];
+            $comprobante= $_POST['id_tipocom'];
+            $municipio = $_POST['municipio'];
+            $departamento = $_POST['departamento'];
+            $dirreccion= $_POST['direccion'];
+            $numeroregistro = $_POST['numero_registro'];
+            $formapago = $_POST['id_forma'];
+            $tipoventa = $_POST['id_tipoven'];
 
             $salesCreate = new SalesModel();
             return $salesCreate->createSale(
-                $id_sucursal,
-                $id_tipocom,
-                $id_cliente,
-                $direccion,
-                $id_forma,
-                $dias_credito,
-                $punto_venta,
-                $contacto,
-                $id_tipoven,
-                $id_tipofac,
-                $id_usuario,
-                $nota_remision,
-                $num_pedido,
-                $bodega
+                $cliente, 
+                $comprobante,
+                $municipio,
+                $departamento,
+                $dirreccion,
+                $numeroregistro,
+                $formapago,
+                $tipoventa
             );
-        }
+        
+    }
+
+    public function saveFactura()
+    {
+            $descuento = $_POST['descuento'];
+            $iva= $_POST['iva'];
+            $cesc = $_POST['cesc'];
+            $retencion = $_POST['retencion'];
+            $total = $_POST['total'];
+            $id = $_POST['id_venta'];
+        
+            $salesCreate = new SalesModel();
+            return $salesCreate->createDetailF(
+                $descuento,
+                $iva,
+                $cesc,
+                $retencion,
+                $total,
+                $id 
+            );
+        
     }
 
     public function update()

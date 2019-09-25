@@ -12,6 +12,8 @@ import {
 export class ClientService {
     constructor() {
         this.url = `${API}/Client.php`;
+        this.url2 = `${API}/OneClientData.php`;
+        this.url3 = `${API}/SearchClient.php`;
     }
 
     async getClient(page) {
@@ -23,8 +25,26 @@ export class ClientService {
         }
     }
 
+    async getClientSearch(data) {
+        const response = await new HttpService(`${this.url3}?cliente=${data}`, GET).execute();
+        if (response.hasOwnProperty('res')) {
+            return response.res;
+        } else {
+            return response;
+        }
+    }
+
     async saveClient(body) {
         const response = await new HttpService(this.url, POST).setData(body).execute();
+        if (response.hasOwnProperty('res')) {
+            return response.res;
+        } else {
+            return response;
+        }
+    }
+
+    async getClientdataid(id) {
+        const response = await new HttpService(`${this.url2}?id=${id}`, GET).execute();
         if (response.hasOwnProperty('res')) {
             return response.res;
         } else {

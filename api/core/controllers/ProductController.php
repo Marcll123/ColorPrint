@@ -11,10 +11,25 @@ class ProductController
             return $product->consult($page - 1);
         }
     }
+
+    public function showOneProduct()
+    {
+        $product = new ProductModel();
+        if (isset($_REQUEST['id']) && preg_match('/^[a-z0-9]+$/', $_REQUEST['id'])) {
+            $page = $_REQUEST['id'];
+            return $product->consultOneProducts($page);
+        }
+    }
+
     public function showNum()
     {
         $productNum = new ProductModel();
         return $productNum->consultNum();
+    }
+    public function showProducts()
+    {
+        $product = new ProductModel();
+        return $product->consultProducts();
     }
     public function save()
     {

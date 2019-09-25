@@ -18,11 +18,7 @@ class PurchaseDController
     }
     public function save()
     {
-        if (
-            isset($_POST['id_producto']) && isset($_POST['cantidad']) && isset($_POST['descripcion']) &&
-            isset($_POST['precion_uni']) && isset($_POST['total_exeno']) && isset($_POST['total_grabado']) &&
-            isset($_POST['id_compra'])
-        ) {
+    
             $product  = $_POST['id_producto'];
             $quantity = $_POST['cantidad'];
             $description = $_POST['descripcion'];
@@ -33,7 +29,7 @@ class PurchaseDController
 
             $PurchaseDCreate = new PurchaseDModel();
             return $PurchaseDCreate->createPurchaseD($product, $quantity, $description, $priceu, $totale, $totalt, $purchase);
-        }
+
     }
 
     public function update()

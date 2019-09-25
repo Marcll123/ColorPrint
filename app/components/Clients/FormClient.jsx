@@ -1,15 +1,29 @@
 import React, { Component } from "react";
 import Input from "../AnotherComponents/InputText.jsx";
 import Control from "../AnotherComponents/ControlForm.jsx";
+import { CmbSerivices } from '../../services/CmbSerivices.js'
+
 class FormClient extends Component {
   constructor(props) {
     super(props);
     this.state = {
       cliente: "",
-      giro: ""
+      giro: "",
+      dataPaymentMethod: [],
+      dataMunicipaly: [],
+      dataAccount: [],
+      dataTypeClient: [],
     };
     this.handleImput = this.handleImput.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+
+    this.handlecmb = this.handlecmb.bind(this);
+    this.CmbService = new CmbSerivices();
+  }
+
+
+  componentDidMount() {
+    this.handlecmb();
   }
 
   handleImput(e) {
@@ -26,6 +40,21 @@ class FormClient extends Component {
     this.props.onUpdateTodo(data);
   }
 
+  handlecmb() {
+    this.CmbService.getCmbPaymentMethod().then(res => {
+      this.setState({ dataPaymentMethod: [...res] })
+    })
+    this.CmbService.getCmbMunicipaly().then(res => {
+      this.setState({ dataMunicipaly: [...res] })
+    })
+    this.CmbService.getCmbAccount().then(res => {
+      this.setState({ dataAccount: [...res] })
+    })
+    this.CmbService.getCmbTypeClient().then(res => {
+      this.setState({ dataTypeClient: [...res] })
+    })
+  }
+
   render() {
     return (
       <div>
@@ -38,37 +67,47 @@ class FormClient extends Component {
                     for="Cliente"
                     text="Cliente:"
                     type="text"
-                    validation="[A-Za-z]"
                     id="Cliente"
                     name="cliente"
-                    onChange={this.handleImput}
+                    required={true}
+                    onChange={this.props.changeclient}
+                    values={this.props.client}
                   />
                   <Input
                     for="Giro"
                     text="Giro:"
                     type="text"
-                    validation="[A-Za-z]"
                     id="Giro"
                     name="giro"
-                    onChange={this.handleImput}
+                    onChange={this.props.changeturn}
+                    values={this.props.turn}
                   />
                   <Input
                     for="NumNit"
                     text="Numero NIT:"
                     type="text"
-                    validation="[0-9-]+"
                     id="NumNit"
                     name="numero_nit"
-                    onChange={this.handleImput}
+                    onChange={this.props.changenit}
+                    values={this.props.nit}
                   />
                   <Input
                     for="NumRegistry"
                     text="Numero Registro:"
                     type="text"
-                    validation="[0-9-]+"
                     id="NumRegistry"
                     name="numero_registro"
-                    onChange={this.handleImput}
+                    onChange={this.props.changenumregistry}
+                    values={this.props.numregistry}
+                  />
+                  <Input
+                    for="Address"
+                    text="Direccion:"
+                    type="text"
+                    id="Address"
+                    name="direccion"
+                    onChange={this.props.changeaddress}
+                    values={this.props.address}
                   />
                   <Control
                     for="Municipio"
@@ -77,82 +116,31 @@ class FormClient extends Component {
                     name="id_numi"
                     content={
                       <React.Fragment>
-                        <option>1</option>
-                        <option>2</option>
-                        <option>3</option>
-                        <option>4</option>
-                        <option>5</option>
-                        <option>6</option>
-                        <option>7</option>
-                        <option>8</option>
-                        <option>9</option>
-                        <option>10</option>
-                        <option>11</option>
-                        <option>12</option>
-                        <option>13</option>
-                        <option>14</option>
+                        {this.state.dataMunicipaly.map(e => (<option key={e.id_muni} value={e.id_muni}>{e.municipio}</option>))}
                       </React.Fragment>
                     }
                   />
+                  <Control
+                    for="Departament"
+                    id="Departament"
+                    text="Departamentos"
+                    name="id_departamento"
+                    content={
+                      <React.Fragment>
+                        {this.state.dataMunicipaly.map(e => (<option key={e.id_muni} value={e.id_muni}>{e.municipio}</option>))}
+                      </React.Fragment>
+                    }
+                  />
+                </div>
+                <div className="col-sm-12 col-md-12 col-lg-6">
                   <Input
                     for="Phone"
                     text="Telefono:"
                     type="text"
-                    validation="[0-9-]+"
                     id="Phone"
                     name="telefono"
-                    onChange={this.handleImput}
-                  />
-                  <Input
-                    for="Fax"
-                    validation="[0-9-.]+"
-                    text="Numero FAX:"
-                    type="text"
-                    id="Fax"
-                    name="numero_fax"
-                    onChange={this.handleImput}
-                  />
-                  <Input
-                    for="Email"
-                    text="Correo:"
-                    type="email"
-                    id="Email"
-                    name="correo"
-                    onChange={this.handleImput}
-                  />
-                  <Input
-                    for="TotalBalance"
-                    text="Saldo acumulado:"
-                    validation="[0-9-.]+"
-                    type="text"
-                    id="TotalBalance"
-                    name="saldo_acumu"
-                    onChange={this.handleImput}
-                  />
-                  <Input
-                    for="CreditLimit"
-                    text="Limite de credito:"
-                    validation="[0-9-.]+"
-                    type="text"
-                    id="CreditLimit"
-                    name="limite_credito"
-                    onChange={this.handleImput}
-                  />
-                </div>
-                <div className=" col-sm-12 col-md-12 col-lg-6 ">
-                  <Control
-                    for="Forma"
-                    text="Forma de pago:"
-                    id="Forma"
-                    name="id_forma"
-                    content={
-                      <React.Fragment>
-                        <option>1</option>
-                        <option>2</option>
-                        <option>3</option>
-                        <option>4</option>
-                      </React.Fragment>
-                    }
+                    onChange={this.props.changephone}
+                    values={this.props.phone}
                   />
                   <Input
                     for="CreditDays"
@@ -160,93 +148,50 @@ class FormClient extends Component {
                     type="text"
                     id="CreditDays"
                     name="dias_credito"
-                    validation="[0-9]+"
-                    onChange={this.handleImput}
+                    onChange={this.props.changecreditdays}
+                    values={this.props.creditdays}
                   />
                   <Control
-                    for="Account"
-                    text="Cuenta:"
-                    id="Account"
-                    name="id_cuenta"
-                    content={
-                      <React.Fragment>
-                        <option>1</option>
-                        <option>2</option>
-                        <option>3</option>
-                        <option>4</option>
-                        <option>5</option>
-                        <option>6</option>
-                        <option>7</option>
-                        <option>8</option>
-                        <option>9</option>
-                        <option>10</option>
-                        <option>11</option>
-                        <option>12</option>
-                      </React.Fragment>
-                    }
-                  />
-                   <Input
-                    for="Rent"
-                    text="Aplica Renta (si/no):"
-                    type="text"
-                    id="Rent"
-                    name="aplica_rent"
-                    validation="si|no"
-                    onChange={this.handleImput}
-                  />
-                   <Control
-                    for="SellerCode"
-                    text="Codigo de vendedor:"
-                    id="SellerCode"
-                    validation="[0-9-.]+"
-                    name="codigo_vendedor"
-                    content={
-                      <React.Fragment>
-                        <option>1</option>
-                        <option>2</option>
-                        <option>3</option>
-                        <option>4</option>
-                      </React.Fragment>
-                    }
-                  />
-                    <Input
-                    for="LastPaymentDate"
-                    text="Ultima fecha de pago:"
-                    type="text"
-                    id="LastPaymentDate"
-                    name="ultifechapago"
-                    onChange={this.handleImput}
-                  />
-                     <Input
-                    for="CreatedBy"
-                    text="Creado por:"
-                    type="text"
-                    id="CreatedBy"
-                    name="creadopor"
-                    onChange={this.handleImput}
-                  />
-                    <Input
-                    for="CreatedDate"
-                    text="Fecha de creacion:"
-                    type="text"
-                    id="CreatedDate"
-                    name="fechacreacion"
-                    onChange={this.handleImput}
-                  />
-                    <Control
                     for="ClientType"
                     text="Tipo de Cliente:"
                     id="ClientType"
                     name="id_tipocli"
                     content={
                       <React.Fragment>
-                        <option>1</option>
-                        <option>2</option>
+                        {this.state.dataTypeClient.map(e => (<option key={e.id_tipocli} value={e.id_tipocli}>{e.tipo_cliete}</option>))}
                       </React.Fragment>
                     }
                   />
+
+                  <Input
+                    for="Email"
+                    text="Correo:"
+                    type="email"
+                    id="Email"
+                    name="correo"
+                    onChange={this.props.changemail}
+                    values={this.props.mail}
+                  />
+                  <Input
+                    for="TotalBalance"
+                    text="Saldo acumulado:"
+                    type="text"
+                    id="TotalBalance"
+                    name="saldo_acumu"
+                    onChange={this.props.changetotalbalance}
+                    values={this.props.totalbalance}
+                  />
+                  <Input
+                    for="CreditLimit"
+                    text="Limite de credito:"
+                    type="text"
+                    id="CreditLimit"
+                    name="limite_credito"
+                    onChange={this.props.changecreditlimit}
+                    values={this.props.creditlimit}
+                  />
                 </div>
-                <div className="mx-auto split">
+                <div className="d-flex justify-content-center col-sm-12 col-md-12 col-lg-12">
                   <button type="submit" className="btn btn-info mr-1">
                     Realizar
                   </button>

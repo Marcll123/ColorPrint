@@ -34,12 +34,16 @@ class NavContent extends Component{
         //detecta si se esta moviendo el mausa, en caso de que no espera un tiempo determinado
         //para borrar el token de la local storage 
         const clicks = fromEvent(document, 'mousemove');
-        const result = clicks.pipe(debounceTime(60000));
+        const result = clicks.pipe(debounceTime(300000));
         result.subscribe(() => {
             localStorage.clear()
             this.setState({ redirect: true })
         });
 
+        if (localStorage.getItem("token")) {
+        } else {
+            this.setState({ redirect: true })
+        }
         //Una vez se borra el token de la local storage este bloque tiene la funcion
         //de redireccionar al login media ves no haya un token activo
         if(this.state.redirect){

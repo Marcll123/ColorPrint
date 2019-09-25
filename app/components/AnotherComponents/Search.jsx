@@ -13,10 +13,13 @@ class Search extends Component {
             type="search"
             className="form-control mr-sm-2"
             placeholder="Buscar"
+            pattern="[a-z]"
+            onChange={this.props.changeSearch}
           />
           <button
             className="btn btn-outline-primary my-2 my-sm-2"
-            type="submit"
+            type="button"
+            onClick={this.props.searchClick}
           >
             Buscar
           </button>

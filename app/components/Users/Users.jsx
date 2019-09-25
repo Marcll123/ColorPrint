@@ -12,21 +12,33 @@ import Pagination from "react-js-pagination";
 import { UsersService } from "../../services/UsersService.js";
 import { NumberDetail } from "../../services/UsersService.js";
 import ModalMessage from "../AnotherComponents/ModalMessage.jsx";
+import ModalMsm from "../AnotherComponents/ModalMsm.jsx";
 
 class Users extends Component {
   constructor(props) {
     super(props);
-    this.token = localStorage.getItem('token');
+    this.token = localStorage.getItem("token");
     if (!this.token) {
-      location.pathname = '/'
+      location.pathname = "/";
     }
-    console.log(this.token);    
     this.state = {
       titles: ["Nombre", "Apellidos", "Genero", "Usuario", "Correo", "Rol"],
       keys: ["nombre", "apellido", "genero", "nombre_usu", "correo", "roles"],
       data: [],
       val: 1,
-      show: ''
+      showadd: "",
+      showup: "",
+      showde: "",
+      visible: true,
+      modal: "",
+      inputnombre: "",
+      inputapellido: "",
+      inputgenero: "",
+      inputusuario: "",
+      inputcorreo: "",
+      inputrol: "",
+      search: "",
+      visiblePass: true
     };
     this.userService = new UsersService();
     this.NumberDetail = new NumberDetail();
@@ -41,8 +53,14 @@ class Users extends Component {
     this.idDelete = "";
     this.num = 1;
     this.totalItemsCount = 0;
+
+    this.rol = localStorage.getItem("rol");
+
+    this.handleChange = this.handleChange.bind(this);
+    this.handleChange2 = this.handleChange2.bind(this);
   }
 
+  //Es un metodo para lapaginacion
   handlePageChange(pageNumber) {
     this.setState(
       {
@@ -54,21 +72,28 @@ class Users extends Component {
     );
   }
 
+  //El primer renderizado
   componentDidMount() {
     this.getdata(this.state.val);
+    if (this.rol === "1") {
+      this.setState({ visible: true, modal: "#modal1" });
+    } else if (this.rol === "2") {
+      this.setState({ visible: false, modal: "" });
+    }
   }
 
+  //Obtiene los datos de
+  //usuario accediento por una peticion
+  //fetch
   getdata(page) {
-    if(this.token){
-    this.userService.getUsers(page).then(res => {
-      this.setState(prev => {
-        const { data } = prev;
-        return { data: [...res] };
-  
+    if (this.token) {
+      this.userService.getUsers(page).then(res => {
+        this.setState(prev => {
+          const { data } = prev;
+          return { data: [...res] };
+        });
       });
-    });
-  }
-
+    }
   }
 
   handleInit() {
@@ -76,26 +101,43 @@ class Users extends Component {
   }
 
   update(row) {
-    return event => {
+    return e => {
       this.id = row.id_usuario;
-      console.log(row.id);
+      console.log(this.id);
+      this.userService.getUsersdataid(this.id).then(res => {
+        this.setState({
+          inputnombre: res[0].nombre,
+          inputapellido: res[0].apellido,
+          inputgenero: res[0].genero,
+          inputusuario: res[0].nombre_usu,
+          inputcorreo: res[0].correo,
+          inputrol: res[0].roles,
+          showup: "",
+          showadd: "",
+          visiblePass: false
+        });
+      });
     };
   }
+
   delete(row) {
     return e => {
       this.idDelete = row.id_usuario;
-      console.log(this.idDelete);
+      this.setState({showde: ""})
     };
   }
 
   handleAddTodo(form) {
-    this.userService.saveUsers(form).then(res => {
-      this.getdata(this.state.val);
-      const {message} = res;
-      if(message === "He insertado un registro"){
-          this.setState({show:'show'})
-      }
-    });
+    if (this.id === "") {
+      this.userService.saveUsers(form).then(res => {
+        this.getdata(this.state.val);
+        const { message } = res;
+        if (message === "He insertado un registro") {
+          $('#modalAdd').modal('show')
+          $('#modal1').modal('hide')
+        }
+      });
+    }
   }
 
   handleUpdateTodo(form) {
@@ -105,9 +147,18 @@ class Users extends Component {
       };
     });
 
-    this.userService.updateUsers(Object.assign({}, ...a), this.id).then(res => {
-      this.getdata(this.state.val);
-    });
+    if (this.id !== "") {
+      this.userService
+        .updateUsers(Object.assign({}, ...a), this.id)
+        .then(res => {
+          this.getdata(this.state.val);
+          const { message } = res;
+          if (message === "He actualizado un registro") {
+            $('#modalUpdate').modal('show')
+            $('#modal1').modal('hide')
+          }
+        });
+    }
   }
 
   handleSubmitiId(e) {
@@ -115,6 +166,11 @@ class Users extends Component {
     console.log(this.idDelete);
     this.userService.deleteUsers(this.idDelete).then(res => {
       this.getdata(this.state.val);
+      const {message} = res;
+      if(message === "He borrado un registro"){
+        $('#modalDelete').modal('show')
+        $('#modal2').modal('hide')
+      }
     });
   }
 
@@ -123,12 +179,49 @@ class Users extends Component {
       this.totalItemsCount = res[0].num;
     });
   }
-  Add(e){
-    this.id = ""
-    console.log(this.id)
+  Add(e) {
+    this.id = "";
+    console.log(this.id);
+    this.setState({ showup: "", showadd: "", visiblePass: true });
   }
+
+  handleChange(e) {
+    e.preventDefault();
+    this.setState({ inputnombre: e.target.value });
+  }
+  handleChange2(e) {
+    e.preventDefault();
+    this.setState({ inputapellido: e.target.value });
+  }
+  handleChange3(e) {
+    e.preventDefault();
+    this.setState({ inputusuario: e.target.value });
+  }
+  handleChange4(e) {
+    e.preventDefault();
+    this.setState({ inputcorreo: e.target.value });
+  }
+
+  Search(e) {
+    this.setState({ search: e.target.value });
+  }
+
+  onSearch() {
+    if (this.state.search === "") {
+      this.getdata(this.state.val);
+    } else {
+      this.userService.getUserSearch(this.state.search.toLocaleLowerCase()).then(res => {
+        this.setState(prev => {
+          const { data } = prev;
+          return { data: [...res] };
+        });
+      });
+    }
+  }
+
   render() {
     const { state } = this;
+
     return (
       <div className="d-flex principal" id="wrapper">
         <Menu />
@@ -155,9 +248,16 @@ class Users extends Component {
                   <FormUsers
                     onAddTodo={this.handleAddTodo}
                     onUpdateTodo={this.handleUpdateTodo}
-                    message={ <ModalMessage title="Mensaje de usuario" body="Accion realizada con exito se a insertado un nuevo usuario" show={this.state.show}/>}
+                    default={this.state.inputnombre}
+                    valuelastname={this.state.inputapellido}
+                    valueuser={this.state.inputusuario}
+                    valuemail={this.state.inputcorreo}
+                    changename={this.handleChange}
+                    changelastname={this.handleChange2}
+                    changeuser={this.handleChange3.bind(this)}
+                    changemail={this.handleChange4.bind(this)}
+                    visible={this.state.visiblePass}
                   />
-                  
                 }
                 title="Usuarios"
               />
@@ -166,9 +266,11 @@ class Users extends Component {
                 size="modal-sm"
                 center="modal-dialog-centered"
                 form={
-                  <h1 className="text-danger text">
-                    Desea eliminar este usuario
-                  </h1>
+                  <React.Fragment>
+                    <h1 className="text-danger text">
+                      Desea eliminar este usuario
+                    </h1>
+                  </React.Fragment>
                 }
                 footer={
                   <form
@@ -181,13 +283,50 @@ class Users extends Component {
                 }
               />
 
+              <ModalMsm
+                  id="modalDelete"
+                  color="text-danger"
+                  title="Mensaje de Exito"
+                  colorButton="bg-danger"
+                  message="UsuarioEliminado Exitosamente"
+                />
+                 <ModalMsm
+                  id="modalAdd"
+                  color="text-success"
+                  title="Mensaje de Exito"
+                  colorButton="bg-success"
+                  message="Usuario creado Exitosamente"
+                />
+                 <ModalMsm
+                  id="modalUpdate"
+                  color="text-info"
+                  title="Mensaje de Exito"
+                  colorButton="bg-info"
+                  message="Usuario actualizado Exitosamente"
+                />
+
+
               <div className="row split">
                 <div className="col-12">
                   <div className="card">
                     <div className="card-body">
-                      <Search textButton="Agregar usuario"
-                       botontable={<a className="btn btn-outline-primary my-2 my-sm-2 my-2  ml-2 color-primary" href="http://localhost/ColorPrint/app/reportes/reporteUsuarios.php" target="_blanck">PDF</a>} 
-                       modal="modal" target="#modal1" click={this.Add}/>
+                      <Search
+                        textButton="Agregar usuario"
+                        botontable={
+                          <a
+                            className="btn btn-outline-primary my-2 my-sm-2 my-2  ml-2 color-primary"
+                            href="http://localhost/ColorPrint/app/reportes/reporteUsuarios.php"
+                            target="_blanck"
+                          >
+                            PDF
+                          </a>
+                        }
+                        modal="modal"
+                        target={this.state.modal}
+                        click={this.Add}
+                        changeSearch={this.Search.bind(this)}
+                        searchClick={this.onSearch.bind(this)}
+                      />
                       <Table
                         className="table table-responsive-sm table-responsive-md table-responsive-sm-xl
                         table-responsive-lg"
@@ -198,6 +337,7 @@ class Users extends Component {
                           update: this.update.bind(this),
                           delete: this.delete.bind(this)
                         }}
+                        target={this.state.modal}
                       />
                       <div className="d-flex justify-content-center">
                         <Pagination

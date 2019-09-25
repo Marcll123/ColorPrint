@@ -6,7 +6,24 @@ require_once '../helpers/connection.php';
 class SaleDetailModel extends Connection
 {
     //Función para realizar la consulta de los datos 
-    public function consult($num)
+    public function consult($id)
+    {
+        $connection = parent::connect();
+        try {
+            $query = "SELECT produto.nombre_produc, detalleventa.cantidad, detalleventa.v_nosujeta, detalleventa.v_exenta, detalleventa.descripcion, detalleventa.v_gravado, detalleventa.precio, detalleventa.subtotal, detalleventa.id_venta FROM detalleventa INNER JOIN produto ON produto.id_producto = detalleventa.id_producto WHERE  detalleventa.id_venta =".$id ;
+            $data =  $connection->query($query, PDO::FETCH_ASSOC)->fetchAll();
+            return $data;
+        } catch (Exception $e) {
+            $array = [
+                'message' => 'Error al ingresar el detalle de venta',
+                'type' => 'error',
+                'specificMessage' => $e->getMessage()
+            ];
+            return json_encode($array);
+        }
+    }
+
+    public function consultAll($num)
     {
         $connection = parent::connect();
         try {
@@ -14,7 +31,7 @@ class SaleDetailModel extends Connection
             $page = 1 + $num;
             $page = $page - 1;
             $p = $page * $rowpaper;
-            $query = 'SELECT id_detalleven, card_producto, umd, cantidad, descuento, v_nosujeta, v_efecta, t_p, descripcion, total_gravado, precio, v_conversion, u_conversion, total, id_venta from detalleventa limit ' . $p . ', ' . $rowpaper;
+            $query = 'SELECT produto.nombre_produc, detalleventa.cantidad, detalleventa.v_nosujeta, detalleventa.v_exenta, detalleventa.descripcion, detalleventa.v_gravado, detalleventa.precio, detalleventa.id_venta FROM detalleventa INNER JOIN produto ON produto.id_producto = detalleventa.id_producto  limit ' . $p . ', ' . $rowpaper;
             $data =  $connection->query($query, PDO::FETCH_ASSOC)->fetchAll();
             return $data;
         } catch (Exception $e) {
@@ -45,13 +62,14 @@ class SaleDetailModel extends Connection
         }
     }
 
+
      //Función para realizar la acción de crear un nuevo dato
-    public function createSaled($cproduct, $umd, $quantity, $discount, $vnosubject, $veffector, $tp, $description, $total_e, $price, $vconversion, $uconversion, $total, $saleid)
+    public function createSaled($producto, $cantidad, $vnosujeta, $vexenta, $descripcion, $vgravdo, $precio, $subtotal, $venta)
     {
         $conexion = parent::connect();
         try {
-            $query = 'INSERT INTO detalleventa(card_producto, umd, cantidad, descuento, v_nosujeta, v_efecta, t_p, descripcion, total_gravado, precio, v_conversion, u_conversion, total, id_venta ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)';
-            $conexion->prepare($query)->execute(array($cproduct, $umd, $quantity, $discount, $vnosubject, $veffector, $tp, $description, $total_e, $price, $vconversion, $uconversion, $total, $saleid));
+            $query = 'INSERT INTO detalleventa(id_producto, cantidad, v_nosujeta, v_exenta, descripcion, v_gravado, precio, subtotal, id_venta) VALUES (?,?,?,?,?,?,?,?,?)';
+            $conexion->prepare($query)->execute(array($producto, $cantidad, $vnosujeta, $vexenta, $descripcion, $vgravdo, $precio, $subtotal, $venta));
             $array = [
                 'message' => 'He insertado un registro',
                 'type' => 'success',

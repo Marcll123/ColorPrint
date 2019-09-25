@@ -1,14 +1,30 @@
 import React, { Component } from "react";
 import Input from "../AnotherComponents/InputText.jsx";
 import Control from "../AnotherComponents/ControlForm.jsx";
+import { CmbSerivices } from '../../services/CmbSerivices.js'
 
 class FormPurchase extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      dataProvider: [],
+      dataTypeDocument: [],
+      dataTypePurchase: [],
+      dataPaymentMethod: [],
+      dataOriginPurchase: [],
+      dataProduct: [],
+    };
     this.handleImput = this.handleImput.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleSubmit2 = this.handleSubmit2.bind(this);
+    this.handlecmb = this.handlecmb.bind(this);
+
+    this.CmbService = new CmbSerivices();
+  }
+
+
+  componentDidMount() {
+    this.handlecmb();
   }
 
   handleImput(e) {
@@ -22,7 +38,7 @@ class FormPurchase extends Component {
     e.preventDefault();
     const data = new FormData(e.target);
     this.props.onAddTodo(data);
-    this.props.onUpdateTodo(data);    
+    this.props.onUpdateTodo(data);
   }
 
   handleSubmit2(e) {
@@ -31,6 +47,26 @@ class FormPurchase extends Component {
     this.props.onAddTodo2(data);
   }
 
+  handlecmb() {
+    this.CmbService.getCmbProvider().then(res => {
+      this.setState({ dataProvider: [...res] })
+    })
+    this.CmbService.getCmbTypeDocument().then(res => {
+      this.setState({ dataTypeDocument: [...res] })
+    })
+    this.CmbService.getCmbTypePurchase().then(res => {
+      this.setState({ dataTypePurchase: [...res] })
+    })
+    this.CmbService.getCmbPaymentMethod().then(res => {
+      this.setState({ dataPaymentMethod: [...res] })
+    })
+    this.CmbService.getCmbOriginPurchase().then(res => {
+      this.setState({ dataOriginPurchase: [...res] })
+    })
+    this.CmbService.getCmbProduct().then(res => {
+      this.setState({ dataProduct: [...res] })
+    })
+  }
 
   render() {
     return (
@@ -56,8 +92,7 @@ class FormPurchase extends Component {
                     name="id_proveedor"
                     content={
                       <React.Fragment>
-                        <option>1</option>
-                        <option>2</option>
+                        {this.state.dataProvider.map(e => (<option key={e.id_proveedor} value={e.id_proveedor}>{e.nombre_prove}</option>))}
                       </React.Fragment>
                     }
                   />
@@ -86,7 +121,7 @@ class FormPurchase extends Component {
                     name="id_tipodoc"
                     content={
                       <React.Fragment>
-                        <option>1</option>
+                        {this.state.dataTypeDocument.map(e => (<option key={e.id_tipodoc} value={e.id_tipodoc}>{e.tipo_docmento}</option>))}
                       </React.Fragment>
                     }
                   />
@@ -106,7 +141,7 @@ class FormPurchase extends Component {
                     name="id_tipocompra"
                     content={
                       <React.Fragment>
-                        <option>1</option>
+                        {this.state.dataTypePurchase.map(e => (<option onClick={this.props.clickoption} key={e.id_tipocompra} value={e.id_tipocompra}>{e.tipo_compra}</option>))}
                       </React.Fragment>
                     }
                   />
@@ -115,12 +150,11 @@ class FormPurchase extends Component {
                   <Control
                     for="Forma"
                     text="Tipo Forma:"
-                    validation=""
                     id="TForma"
                     name="id_forma"
                     content={
                       <React.Fragment>
-                        <option>1</option>
+                        {this.state.dataPaymentMethod.map(e => (<option key={e.id_forma} value={e.id_forma}>{e.forma_pago}</option>))}
                       </React.Fragment>
                     }
                   />
@@ -132,7 +166,7 @@ class FormPurchase extends Component {
                     name="id_origencom"
                     content={
                       <React.Fragment>
-                        <option>1</option>
+                        {this.state.dataOriginPurchase.map(e => (<option key={e.id_origencom} value={e.id_origencom}>{e.origen_com}</option>))}
                       </React.Fragment>
                     }
                   />
@@ -200,15 +234,16 @@ class FormPurchase extends Component {
                   <h6>Detalle compra</h6>
                 </div>
                 <div className=" col-sm-12 col-md-12 col-lg-6">
-                <Control
+                  <Control
                     for="Product"
                     text="Codigo producto:"
                     validation=""
                     id="Product"
                     name="id_producto"
+                    change={this.props.change}
                     content={
                       <React.Fragment>
-                        <option>1</option>
+                       {this.state.dataProduct.map(e => (<option key={e.id_producto} value={e.id_producto}>{e.nombre_produc}</option>))}
                       </React.Fragment>
                     }
                   />
@@ -219,7 +254,7 @@ class FormPurchase extends Component {
                     validation=""
                     id="Cantidad"
                     name="cantidad"
-                    onChange={this.handleImput}
+                    onChange={this.props.changeCantida}
                   />
                   <Input
                     for="Description"
@@ -238,6 +273,7 @@ class FormPurchase extends Component {
                     id="PriceU"
                     name="precio_uni"
                     onChange={this.handleImput}
+                    values={this.props.precio}
                   />
                 </div>
                 <div className=" col-sm-12 col-md-12 col-lg-6">
@@ -254,30 +290,23 @@ class FormPurchase extends Component {
                     for="TGD"
                     text="Total grabado:"
                     type="text"
-                    validation=""
                     id="TGD"
                     name="total_grabado"
                     onChange={this.handleImput}
                   />
-                    <Control
+                  <Input
                     for="CD"
                     text="Codigo compra:"
-                    validation=""
+                    type="text"
                     id="CD"
                     name="id_compra"
-                    content={
-                      <React.Fragment>
-                        <option>1</option>
-                        <option>2</option>
-                        <option>3</option>
-                        <option>4</option>
-                        <option>5</option>
-                        <option>6</option>
-                      </React.Fragment>
-                    }
+                    values={this.props.codigocompra}
                   />
                 </div>
                 <div className="mx-auto split">
+                  <button type="button" onClick={this.props.click} className="btn btn-info mr-1">
+                    Llenar campos
+                  </button>
                   <button type="submit" className="btn btn-info mr-1">
                     Realizar
                   </button>

@@ -11,42 +11,47 @@ import AcceptButton from "../AnotherComponents/buttons/AcceptButton.jsx";
 import Pagination from "react-js-pagination";
 import { ClientService } from "../../services/ClientService.js";
 import { NumberAll } from "../../services/ClientService.js";
+import ModalMessage from "../AnotherComponents/ModalMessage.jsx";
+import ModalMsm from "../AnotherComponents/ModalMsm.jsx";
 
 class Clients extends Component {
   //Constructor de el componente Clients
   constructor(props) {
     super(props);
-    this.token = localStorage.getItem('token');
+    this.token = localStorage.getItem("token");
     if (!this.token) {
-      location.pathname = '/'
-    } 
+      location.pathname = "/";
+    }
     //Estate de el componente Clients que contiene titles de la tabla y sus keys para obtener
     //los datos y mostrarlos en la vista
     this.state = {
       titles: [
-        "ID",
         "Cliente",
-        "Giro",
-        "NIT",
         "Numero Registo",
-        "Correo",
-        "Saldo acumulado",
-        "Codigo vendedor",
+        "Direccion",
+        "Departamento",
         "Tipo"
       ],
       keys: [
-        "id_cliente",
         "cliente",
-        "giro",
-        "numero_nit",
         "numero_registro",
-        "correo",
-        "saldo_acumu",
-        "codigo_vendedor",
+        "direccion",
+        "departamento",
         "tipo_cliete"
       ],
       data: [],
-      val: 1
+      val: 1,
+      cliente:"",
+      giro: "",
+      numero_nit: "",
+      numero_registro: "",
+      direccion: "",
+      telefono:"",
+      dias_credito: "",
+      correo: "",
+      saldo_acumu: "",
+      limite_credito: "",
+      search: ""
     };
 
     this.clientService = new ClientService();
@@ -58,6 +63,7 @@ class Clients extends Component {
     this.handlePagination = this.handlePagination.bind(this);
     this.handlePageChange = this.handlePageChange.bind(this);
     this.Add = this.Add.bind(this);
+    this.handleImput = this.handleImput.bind(this);
     this.getdata;
     this.id = "";
     this.idDelete = "";
@@ -103,18 +109,42 @@ class Clients extends Component {
   update(row) {
     return e => {
       this.id = row.id_cliente;
+      this.setState({ messagevisibleU: false });
+      this.setState({ messagevisible: false });
+      this.clientService.getClientdataid(this.id).then(res => {
+        this.setState({
+          cliente: res[0].cliente,
+          giro: res[0].giro,
+          numero_nit: res[0].numero_nit,
+          numero_registro: res[0].numero_registro,
+          direccion: res[0].direccion,
+          telefono: res[0].telefono,
+          dias_credito: res[0].dias_credito,
+          correo: res[0].correo,
+          saldo_acumu: res[0].saldo_acumu,
+          limite_credito: res[0].limite_credito
+        });
+      });
     };
   }
   delete(row) {
     return e => {
       this.idDelete = row.id_cliente;
+      this.setState({ messagevisibleD: false });
     };
   }
   //Este metodo realiza  la accion de agregar datos a la base de datos usando su servicio
   handleAddTodo(form) {
-    this.clientService.saveClient(form).then(res => {
-      this.getdata(this.state.val);
-    });
+    if (this.id === "") {
+      this.clientService.saveClient(form).then(res => {
+        this.getdata(this.state.val);
+        const { message } = res;
+        if (message === "He insertado un registro") {
+          $('#modalAdd').modal('show')
+          $('#modal1').modal('hide')
+        }
+      });
+    }
   }
   //Este metodo se encarga de actualizar los datos de la base de datos y mostrar los cambios
   //En el componente una vez se realiza la accion
@@ -125,17 +155,29 @@ class Clients extends Component {
       };
     });
 
-    this.clientService
-      .updateClient(Object.assign({}, ...a), this.id)
-      .then(res => {
-        this.getdata(this.state.val);
-      });
+    if (this.id !== "") {
+      this.clientService
+        .updateClient(Object.assign({}, ...a), this.id)
+        .then(res => {
+          this.getdata(this.state.val);
+          const { message } = res;
+          if (message === "He actualizado un registro") {
+            $('#modalUpdate').modal('show')
+            $('#modal1').modal('hide')
+          }
+        });
+    }
   }
   //Este es el metodo que se encarga de eliminar un dato de la base de datos usando su servicio
   handleSubmitiId(e) {
     e.preventDefault();
     this.clientService.deleteClient(this.idDelete).then(res => {
       this.getdata(this.state.val);
+      const { message } = res;
+      if (message === "He borrado un registro") {
+        $('#modalDelete').modal('show')
+        $('#modal2').modal('hide')
+      }
     });
   }
   //Este es un metodo que hace que this.id  = "" para que no haya problemas a la hora de crear
@@ -144,6 +186,32 @@ class Clients extends Component {
     this.id = "";
     console.log(this.id);
   }
+
+
+  handleImput(e) {
+    const { value, name } = e.target;
+    this.setState({
+      [name]: value
+    });
+  }
+
+  Search(e) {
+    this.setState({ search: e.target.value });
+  }
+
+  onSearch() {
+    if (this.state.search === "") {
+      this.getdata(this.state.val);
+    } else {
+      this.clientService.getClientSearch(this.state.search.toLocaleLowerCase()).then(res => {
+        this.setState(prev => {
+          const { data } = prev;
+          return { data: [...res] };
+        });
+      });
+    }
+  }
+
   //Metodo render de react donde se renderiza toda la vista del componente
   render() {
     const { state } = this;
@@ -173,6 +241,25 @@ class Clients extends Component {
                   <FormClient
                     onAddTodo={this.handleAddTodo}
                     onUpdateTodo={this.handleUpdateTodo}
+                    changeclient={this.handleImput}
+                    changeturn={this.handleImput}
+                    changenit={this.handleImput}
+                    changenumregistry={this.handleImput}
+                    changeaddress={this.handleImput}
+                    changephone={this.handleImput}
+                    changecreditdays={this.handleImput}
+                    changemail={this.handleImput}
+                    changetotalbalance={this.handleImput}
+                    changecreditlimit={this.handleImput}
+                    client={this.state.cliente}
+                    turn={this.state.giro}
+                    nit={this.state.numero_nit}
+                    address={this.state.direccion}
+                    phone={this.state.telefono}
+                    creditdays={this.state.dias_credito}
+                    mail={this.state.correo}
+                    totalbalance={this.state.saldo_acumu}
+                    creditlimit={this.state.limite_credito}
                   />
                 }
                 title="Clientes"
@@ -183,9 +270,11 @@ class Clients extends Component {
                 size="modal-sm"
                 center="modal-dialog-centered"
                 form={
-                  <h1 className="text-danger text">
-                    Desea eliminar este usuario
-                  </h1>
+                  <React.Fragment>
+                    <h1 className="text-danger text">
+                      Desea eliminar este usuario
+                    </h1>
+                  </React.Fragment>
                 }
                 footer={
                   <form
@@ -197,6 +286,30 @@ class Clients extends Component {
                   </form>
                 }
               />
+              {/* Modal de mensaje  */}
+
+                <ModalMsm
+                  id="modalDelete"
+                  color="text-danger"
+                  title="Mensaje de Exito"
+                  colorButton="bg-danger"
+                  message="Cliente Eliminado Exitosamente"
+                />
+                 <ModalMsm
+                  id="modalAdd"
+                  color="text-success"
+                  title="Mensaje de Exito"
+                  colorButton="bg-success"
+                  message="Cliente creado Exitosamente"
+                />
+                 <ModalMsm
+                  id="modalUpdate"
+                  color="text-info"
+                  title="Mensaje de Exito"
+                  colorButton="bg-info"
+                  message="Cliente actualizado Exitosamente"
+                />
+
               <div className="row split">
                 <div className="col-12">
                   <div className="card">
@@ -206,14 +319,25 @@ class Clients extends Component {
                       <Search
                         textButton="Agregar cliente"
                         modal="modal"
-                        botontable={<a className="btn btn-outline-primary my-2 my-sm-2 my-2  ml-2 color-primary" href="http://localhost/ColorPrint/app/reportes/repoclin.php" target="_blanck">PDF</a>} 
+                        botontable={
+                          <a
+                            className="btn btn-outline-primary my-2 my-sm-2 my-2  ml-2 color-primary"
+                            href="http://localhost/ColorPrint/app/reportes/repoclin.php"
+                            target="_blanck"
+                          >
+                            PDF
+                          </a>
+                        }
                         target="#modal1"
                         click={this.Add}
+                        changeSearch={this.Search.bind(this)}
+                        searchClick={this.onSearch.bind(this)}
                       />
                       <Table
                         id="dtHorizontalExample"
                         className="table table-responsive-sm table-responsive-md table-responsive-sm-xl
                         table-responsive-lg"
+                        target="#modal1"
                         titles={state.titles}
                         data={state.data}
                         keys={state.keys}

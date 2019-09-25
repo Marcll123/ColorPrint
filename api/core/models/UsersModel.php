@@ -41,6 +41,41 @@ class UserModel extends Connection
         }
     }
 
+    
+    public function searchUser($user)
+    {
+        $connection = parent::connect();
+        try {
+            $query = "SELECT id_usuario, nombre, apellido, genero, nombre_usu , correo, clave, roles.roles FROM usuarios INNER JOIN roles ON usuarios.id_rol = roles.id_rol WHERE nombre_usu like '%$user%' ";
+            $data =  $connection->query($query, PDO::FETCH_ASSOC)->fetchAll();
+            return $data;
+        } catch (Exception $e) {
+            $array = [
+                'message' => 'Error al ingresar un registro',
+                'type' => 'error',
+                'specificMessage' => $e->getMessage()
+            ];
+            return json_encode($array);
+        }
+    }
+
+    public function consultOneUserId($id)
+    {
+        $connection = parent::connect();
+        try {
+            $query = "SELECT id_usuario, nombre, apellido, genero, nombre_usu , correo, clave, roles.roles FROM usuarios INNER JOIN roles ON usuarios.id_rol = roles.id_rol WHERE id_usuario =".$id;
+            $data =  $connection->query($query, PDO::FETCH_ASSOC)->fetchAll();
+            return $data;
+        } catch (Exception $e) {
+            $array = [
+                'message' => 'Error al ingresar un registro',
+                'type' => 'error',
+                'specificMessage' => $e->getMessage()
+            ];
+            return json_encode($array);
+        }
+    }
+
     public function consultNum()
     {
         $connection = parent::connect();
@@ -82,17 +117,16 @@ class UserModel extends Connection
         }
     }
 
-    public function updateUser($name, $last_name, $gender, $user, $email, $password, $id_rol, $id)
+    public function updateUser($name, $last_name, $gender, $user, $email, $id_rol, $id)
     {
         $conexion = parent::connect();
         try {
-            $query = 'UPDATE usuarios SET nombre=?, apellido=?, genero=?, nombre_usu=?, correo=?, clave=?, id_rol=? WHERE id_usuario=?';
-            $cifrado = password_hash($password, PASSWORD_BCRYPT);
-            $conexion->prepare($query)->execute(array($name, $last_name, $gender, $user, $email, $cifrado, $id_rol, $id));
+            $query = 'UPDATE usuarios SET nombre=?, apellido=?, genero=?, nombre_usu=?, correo=?, id_rol=? WHERE id_usuario=?';
+            $conexion->prepare($query)->execute(array($name, $last_name, $gender, $user, $email, $id_rol, $id));
             $array = [
                 'message' => 'He actualizado un registro',
                 'type' => 'success',
-                'specificMessage' => $conexion
+                'specificMessage' => $conexion,
             ];
             return json_encode($array);
         } catch (Exception $e) {

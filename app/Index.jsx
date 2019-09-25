@@ -74,11 +74,9 @@ class App extends Component {
                             return (<Clients></Clients>)
                         }}></Route>
                         <Route path="/tipoventas" exact render={() => {
-                            //condicional que verifica que componente sera visible segun que tipo de usuario ingresa
                             if (this.state.visible === true) {
                                 return (<TypeSales></TypeSales>)
                             } else {
-                                //Componenete que muestra un error al no tener permisos para acceder a el
                                 return (<PermissionsPage />)
                             }
                         }}></Route>
@@ -89,11 +87,9 @@ class App extends Component {
                             return (<Sales></Sales>)
                         }}></Route>
                         <Route path="/tipocompras" exact render={() => {
-                            //condicional que verifica que componente sera visible segun que tipo de usuario ingresa
                             if (this.state.visible === true) {
                                 return (<TypeBuy></TypeBuy>)
                             } else {
-                                //Componenete que muestra un error al no tener permisos para acceder a el
                                 return (<PermissionsPage />)
                             }
                         }}></Route>

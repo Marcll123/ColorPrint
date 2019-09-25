@@ -14,6 +14,7 @@ import { Number } from "../../services/PurchaseService.js";
 import { PruchaseDService } from "../../services/PurcheseDetail.js";
 import { NumberD } from "../../services/PurcheseDetail.js";
 import FormPurchase from "./FormPurchase.jsx";
+import { CmbSerivices } from '../../services/CmbSerivices.js'
 
 class Purchase extends Component {
   //contructor de purchase que  contiene los states del componente
@@ -46,7 +47,7 @@ class Purchase extends Component {
         "Codigo producto",
         "Cantidad",
         "Descripcion",
-        "precio  unitario",
+        "precio compra",
         "Total exento",
         "Total grabado",
         "Codigo compra"
@@ -61,7 +62,11 @@ class Purchase extends Component {
         "id_compra"
       ],
       data2: [],
-      val2: 1
+      val2: 1,
+      lastid: 0,
+      producto: 0,
+      productoPrice: 0,
+      cantidadProduct: 0
     };
 
     this.PurchaseService = new PurchaseService();
@@ -84,6 +89,10 @@ class Purchase extends Component {
     this.num = 1;
     this.totalItemsCount = 0;
     this.totalItemsCount2 = 0;
+
+    this.CmbService = new CmbSerivices();
+    this.handleImput = this.handleImput.bind(this);
+    this.handleImput2 = this.handleImput2.bind(this);
   }
   //Obtine el numero de datos desde la base de datos
   handlePagination() {
@@ -166,6 +175,14 @@ class Purchase extends Component {
     }
   }
   handleAddTodo2(form) {
+    const a = Array.from(form.entries()).map(arr => {
+      return {
+        [arr[0]]: arr[1]
+      };
+    });
+
+    console.log(a);
+    
     this.PurchaseDService.savePurchaseD(form).then(res => {
       this.getdata2(this.state.val2);
     });
@@ -198,9 +215,28 @@ class Purchase extends Component {
     this.id = "";
     console.log(this.id);
   }
+
+
+  handleImput(e) {
+    this.setState({
+      producto: e.target.value
+    });
+  }
+
+  handleImput2(e) {
+    this.setState({
+      cantidadProduct: e.target.value
+    });
+  }
+
+  handleoption(){
+    console.log('handle')
+  }
+
   //Metodo render de react donde se renderiza toda la vista del componente
   render() {
     const { state } = this;
+    let idCompra = parseInt(this.state.lastid) + 1;
     return (
       <div className="d-flex principal" id="wrapper">
         <Menu />
@@ -227,6 +263,21 @@ class Purchase extends Component {
                     onAddTodo={this.handleAddTodo}
                     onUpdateTodo={this.handleUpdateTodo}
                     onAddTodo2={this.handleAddTodo2}
+                    codigocompra={this.state.lastid}
+                    click={() => {
+                      this.CmbService.getlastid().then(res => {
+                      this.setState({lastid: (res[0].id_compra)})
+                        console.log(res[0].id_compra);
+                      })
+                      this.CmbService.getproductPrice(this.state.producto).then(res => {
+                      this.setState({productoPrice: res[0].precio_uni})
+                        console.log(res[0].precio_uni);
+                      })
+                    }}
+                    change={this.handleImput}
+                    precio={parseFloat(this.state.productoPrice) * parseFloat(this.state.cantidadProduct)}
+                    changeCantida={this.handleImput2}
+                    clickoption={this.handleoption.bind(this)}
                   />
                 }
                 title="Compras"

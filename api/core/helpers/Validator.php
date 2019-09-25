@@ -2,7 +2,7 @@
     class Validator{
         function validar_clave($clave,&$error_clave){
             if(strlen($clave) < 8){
-               $error_clave = "La clave debe tener al menos 6 caracteres";
+               $error_clave = "La clave debe tener al menos 8 caracteres";
                return false;
             }
             if(strlen($clave) > 16){

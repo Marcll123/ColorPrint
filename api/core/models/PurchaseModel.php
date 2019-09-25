@@ -49,8 +49,10 @@ class PurchaseModel extends Connection
     {
         $conexion = parent::connect();
         try {
-            $query = 'INSERT INTO compra(numerodocumento, id_proveedor, direccion, 	bodega, id_tipodoc, serie_costo, id_tipocompra, id_forma, id_origencom, num_registro, num_compra, dai, doc_excluidos) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)';
-            $conexion->prepare($query)->execute(array($numberdocu, $supplier, $address, $celler,  $typedoc, $seriescost, $typepurchase, $shape, $idoriginpucharse, $numregi, $purchasenum, $dai, $excludeddoc));
+            date_default_timezone_set('America/El_Salvador');
+            $date = date("Y-m-d");
+            $query = 'INSERT INTO compra(numerodocumento, id_proveedor, direccion, 	bodega, id_tipodoc, serie_costo, id_tipocompra, id_forma, id_origencom, num_registro, num_compra, dai, doc_excluidos, fecha_compra) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)';
+            $conexion->prepare($query)->execute(array($numberdocu, $supplier, $address, $celler,  $typedoc, $seriescost, $typepurchase, $shape, $idoriginpucharse, $numregi, $purchasenum, $dai, $excludeddoc, $date));
             $array = [
                 'message' => 'He insertado un registro',
                 'type' => 'success',

@@ -23,7 +23,7 @@ export class SalesDetailService {
         }
     }
 
-    async saveSalesDetail(body) {
+    async saveSales(body) {
         const response = await new HttpService(this.url, POST).setData(body).execute();
         if (response.hasOwnProperty('res')) {
             return response.res;

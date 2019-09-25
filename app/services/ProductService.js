@@ -12,10 +12,20 @@ import {
 export class ProductService {
     constructor() {
         this.url = `${API}/Product.php`;
+        this.url2 = `${API}/SalesOneProduct.php`;
     }
 
     async getProduct(page) {
         const response = await new HttpService(`${this.url}?page=${page}`, GET).setHeaders({token: localStorage.getItem('token')}).execute();
+        if (response.hasOwnProperty('res')) {
+            return response.res;
+        } else {
+            return response;
+        }
+    }
+
+    async getOneProduct(data) {
+        const response = await new HttpService(`${this.url2}?id=${data}`, GET).execute();
         if (response.hasOwnProperty('res')) {
             return response.res;
         } else {
